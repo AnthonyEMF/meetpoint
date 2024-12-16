@@ -1,0 +1,22 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{PATH}}/attendances
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "eventId": "e0ad7adc-9b64-409d-8546-08dd09815cab",
+    "state": "CONFIRMADO"
+  }
+}

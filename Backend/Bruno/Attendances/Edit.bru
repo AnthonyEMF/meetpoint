@@ -1,0 +1,21 @@
+meta {
+  name: Edit
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{PATH}}/attendances/43c60452-c9c9-45a9-2762-08dd0988bd41
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "state": "CANCELADO"
+  }
+}

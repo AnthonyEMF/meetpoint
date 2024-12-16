@@ -1,0 +1,21 @@
+meta {
+  name: Edit
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{PATH}}/comments/e090b03b-41c7-4db9-825a-08dd0986c481
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "content": "Hola soy un comentario editado"
+  }
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Edit
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{PATH}}/categories/23a6bfeb-66e4-4cd2-4cde-08dd1613301c
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "name": "Informativos",
+    "description": "Por favor borrame..."
+  }
+}

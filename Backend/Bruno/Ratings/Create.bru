@@ -1,0 +1,23 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{PATH}}/ratings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "eventId": "3a81e7ee-16b2-41f5-951e-150245b5060b",
+    "organizerId": "704540fe-2eaa-412f-a635-d41a4ec17404",
+    "score": 2
+  }
+}

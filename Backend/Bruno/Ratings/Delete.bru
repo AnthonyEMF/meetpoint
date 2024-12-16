@@ -1,0 +1,15 @@
+meta {
+  name: Delete
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{PATH}}/ratings/05b8c56d-20e9-4b30-ea9f-08dd1733f98e
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}

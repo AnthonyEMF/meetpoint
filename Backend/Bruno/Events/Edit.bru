@@ -1,0 +1,25 @@
+meta {
+  name: Edit
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{PATH}}/events/4628204b-71ff-4907-9f8a-08dd16115c8d
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "categoryId": "543aa099-c9a3-4129-a29b-92c34e4c4828",
+    "title": "Evento de Prueba | Editado",
+    "description": "Descripcion del Evento de Prueba | Editado",
+    "ubication": "Santa Rosa de Copán | Editado",
+    "date": "2024-12-25T14:00:00"
+  }
+}

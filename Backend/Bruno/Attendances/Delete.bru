@@ -1,0 +1,15 @@
+meta {
+  name: Delete
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{PATH}}/attendances/1b5abbd7-6be6-4312-2764-08dd0988bd41
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Delete
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{PATH}}/users/704540fe-2eaa-412f-a635-d41a4ec17404
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{PATH}}/comments
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "eventId": "6cdf5ada-045a-40c2-2c32-08dd16d478ae",
+    "content": "Hola soy respuesta 2",
+    "parentId": "ba74a21c-8e96-4aa2-259d-08dd16d2e598"
+  }
+}
