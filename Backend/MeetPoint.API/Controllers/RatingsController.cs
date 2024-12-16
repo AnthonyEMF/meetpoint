@@ -58,5 +58,13 @@ namespace MeetPoint.API.Controllers
 			var response = await _ratingsService.DeleteAsync(id);
 			return StatusCode(response.StatusCode, response);
 		}
+
+		[HttpGet("user/{userId}")]
+		[Authorize(Roles = $"{RolesConstant.USER}, {RolesConstant.ADMIN}, {RolesConstant.ORGANIZER}")]
+		public async Task<ActionResult<ResponseDto<decimal>>> GetRatingByUserId(string userId)
+		{
+			var response = await _ratingsService.GetRatingByUserIdAsync(userId);
+			return StatusCode(response.StatusCode, response);
+		}
 	}
 }

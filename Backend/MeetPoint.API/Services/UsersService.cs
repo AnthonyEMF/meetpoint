@@ -415,7 +415,6 @@ namespace MeetPoint.API.Services
 			}
 		}
 
-
 		public async Task<ResponseDto<UserDto>> ToggleBlockUserAsync(string id)
 		{
 			var userEntity = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);

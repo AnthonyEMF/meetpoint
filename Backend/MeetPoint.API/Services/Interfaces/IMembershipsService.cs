@@ -6,5 +6,6 @@ namespace MeetPoint.API.Services.Interfaces
 	public interface IMembershipsService
 	{
 		Task<ResponseDto<MembershipDto>> AddMembershipAsync(MembershipCreateDto dto);
+		Task<ResponseDto<bool>> GetMembershipStateByIdAsync(string userId);
 	}
 }

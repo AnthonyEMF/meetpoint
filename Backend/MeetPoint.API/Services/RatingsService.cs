@@ -314,5 +314,34 @@ namespace MeetPoint.API.Services
 				};
 			}
 		}
+
+		public async Task<ResponseDto<decimal>> GetRatingByUserIdAsync(string userId)
+		{
+			// Obtener al usuario junto con los ratings
+			var userEntity = await _context.Users
+				.Include(u => u.Ratings)
+				.FirstOrDefaultAsync(u => u.Id == userId);
+
+			// Verificar si el usuario existe
+			if (userEntity is null)
+			{
+				return new ResponseDto<decimal>
+				{
+					StatusCode = 404,
+					Status = false,
+					Message = MessagesConstant.RECORD_NOT_FOUND,
+					Data = 0m
+				};
+			}
+
+			// Usar la propiedad calculada AverageRating
+			return new ResponseDto<decimal>
+			{
+				StatusCode = 200,
+				Status = true,
+				Message = MessagesConstant.RECORD_FOUND,
+				Data = userEntity.AverageRating
+			};
+		}
 	}
 }

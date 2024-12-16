@@ -1,0 +1,15 @@
+meta {
+  name: Get By UserId
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{PATH}}/ratings/user/206e3286-4d96-415e-acd5-c2e0c2f65b4c
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}

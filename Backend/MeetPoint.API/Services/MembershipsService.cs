@@ -83,5 +83,37 @@ namespace MeetPoint.API.Services
 				Data = membershipDto 
 			};
 		}
-    }
+
+		public async Task<ResponseDto<bool>> GetMembershipStateByIdAsync(string userId)
+		{
+			var userEntity = await _context.Users
+				.Include(u => u.Membership)
+				.FirstOrDefaultAsync(u => u.Id == userId);
+
+			if (userEntity is null)
+			{
+				return new ResponseDto<bool>
+				{
+					StatusCode = 404,
+					Status = false,
+					Message = MessagesConstant.RECORD_NOT_FOUND,
+					Data = false
+				};
+			}
+
+			// Determinar si la membresía está activa
+			bool isMembershipActive = userEntity.Membership != null && userEntity.Membership.EndDate > DateTime.UtcNow;
+
+			return new ResponseDto<bool>
+			{
+				StatusCode = 200,
+				Status = true,
+				Message = isMembershipActive
+					? "El usuario tiene una membresía activa."
+					: "El usuario no tiene una membresía activa.",
+				Data = isMembershipActive
+			};
+		}
+
+	}
 }

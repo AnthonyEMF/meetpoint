@@ -10,5 +10,6 @@ namespace MeetPoint.API.Services.Interfaces
 		Task<ResponseDto<RatingDto>> CreateAsync(RatingCreateDto dto);
 		Task<ResponseDto<RatingDto>> EditAsync(RatingEditDto dto, Guid id);
 		Task<ResponseDto<RatingDto>> DeleteAsync(Guid id);
+		Task<ResponseDto<decimal>> GetRatingByUserIdAsync(string userId);
 	}
 }
