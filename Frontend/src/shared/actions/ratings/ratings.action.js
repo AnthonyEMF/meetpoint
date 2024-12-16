@@ -22,6 +22,17 @@ export const getRatingById = async (id) => {
     }
 }
 
+// Obtener por id del usuario
+export const getRatingByUserId = async (userId) => {
+    try {
+        const {data} = await meetpointApi.get(`/ratings/user/${userId}`);
+        return data;
+    } catch(error) {
+        console.error(error);
+        return error.response;
+    }
+}
+
 // Crear
 export const createRatingApi = async (ratingData) => {
     try {

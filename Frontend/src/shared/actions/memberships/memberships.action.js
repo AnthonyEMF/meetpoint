@@ -10,3 +10,14 @@ export const addMembershipApi = async (form) => {
         return error.response;
     }
 }
+
+// Obtener estado de membresía por id de usuario
+export const getMembershipStateApi = async (userId) => {
+    try {
+        const {data} = await meetpointApi.get(`/memberships/state/${userId}`);
+        return data;
+    } catch(error) {
+        console.error(error);
+        return error.response;
+    }
+}

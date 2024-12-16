@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createRatingApi, deleteRatingApi, editRatingApi, getRatingById, getRatingsList } from "../../../shared/actions/ratings/ratings.action";
+import { createRatingApi, deleteRatingApi, editRatingApi, getRatingById, getRatingByUserId, getRatingsList } from "../../../shared/actions/ratings/ratings.action";
 
 export const useRatings = () => {
     const [ratings, setRatings] = useState({});
@@ -21,6 +21,12 @@ export const useRatings = () => {
     // Cargar rating por Id
     const loadRatingById = async (id) => {
         const result = await getRatingById(id);
+        setRating(result);
+    }
+
+    // Cargar rating por Id del usuario
+    const loadRatingByUserId = async (userId) => {
+        const result = await getRatingByUserId(userId);
         setRating(result);
     }
 
@@ -79,6 +85,7 @@ export const useRatings = () => {
         // Methods
         loadRatings,
         loadRatingById,
+        loadRatingByUserId,
         createRating,
         editRating,
         deleteRating,

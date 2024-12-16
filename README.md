@@ -70,7 +70,7 @@
 ## Estado del Proyecto
 
 Actualmente en desarrollo.  
-Implementación de nuevos endpoints para obtener el estado de membresía y rating de un usuario.  
+Mostrar insignias de membresía y rating de organizador en la página de evento.  
 Cambiar los hooks existentes a store con zustand e implementación de formik.  
 Validar que solo se permita el registro para personas mayores de edad.  
 Agregar más ventajas para la membresía de pago.

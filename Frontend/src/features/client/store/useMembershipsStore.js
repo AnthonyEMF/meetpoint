@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { addMembershipApi } from "../../../shared/actions/memberships/memberships.action";
+import { addMembershipApi, getMembershipStateApi } from "../../../shared/actions/memberships/memberships.action";
 
 export const useMembershipsStore = create((set) => ({
   selectedMembership: {},
+  membershipState: false,
   membershipsData: {
     hasNextPage: false,
     hasPreviousPage: false,
@@ -26,6 +27,22 @@ export const useMembershipsStore = create((set) => ({
         }));
       } else {
         throw new Error("Error al crear la membresía");
+      }
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+
+  // Obtener estado de membresía
+  getMembershipState: async (userId) => {
+    try {
+      const result = await getMembershipStateApi(userId);
+      if (result.status) {
+        set({ membershipState: result.data }); // Actualiza el estado global con el valor true/false
+      } else {
+        throw new Error("Error al obtener el estado de la membresía");
       }
       return result;
     } catch (error) {
