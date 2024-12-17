@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../security/store";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PiWarningCircleBold } from "react-icons/pi";
-import { useRatings } from "../hooks/useRatings";
 import { useUsers } from "../hooks/useUsers";
 import { CustomAlerts, Loading, ProtectedComponent } from "../../../shared/components";
 import StarRatingInput from "../../../shared/components/StarRatingInput";
 import { FaUserGear, FaUserXmark } from "react-icons/fa6";
 import { rolesListConstant } from "../../../shared/constants";
 import { useAttendancesStore } from "../store/useAttendancesStore";
+import { useRatingsStore } from "../store/useRatingsStore";
 
 export const Attendances = ({ event, handleAttendancesChange }) => {
   const { createAttendance, editAttendance, deleteAttendance, isSubmitting, error } = useAttendancesStore();
   const [currentAttendance, setCurrentAttendance] = useState(null);
-  const { createRating } = useRatings();
+  const { createRating } = useRatingsStore();
   const [rating, setRating] = useState(null);
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
   const { user, loadUserById } = useUsers();
@@ -21,7 +21,6 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const getUserId = useAuthStore((state) => state.getUserId);
   const loggedUserId = getUserId();
-  const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -109,9 +108,6 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
     await createRating(ratingData);
     setIsRatingSubmitted(true);
     setAlertMessage({ type: "success", message: "¡Gracias por tu calificación!" }); // Usamos el CustomAlert
-    setTimeout(() => {
-    navigate(`/user/view/${event.data.organizerId}`);
-    }, 2000);
   };
 
   if (isLoading) return <Loading />;

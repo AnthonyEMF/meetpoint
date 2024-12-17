@@ -3,6 +3,7 @@ import { useCategoriesStore } from "../store/useCategoriesStore";
 import { useEvents } from "../../client/hooks";
 import { useEffect, useState } from "react";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
+
 export const CategoriesRowItem = ({ category, handleCategoriesChange }) => {
   const { deleteCategory } = useCategoriesStore();
   const { events, loadEvents } = useEvents();
