@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAttendances } from "../hooks/useAttendances";
 import { useAuthStore } from "../../security/store";
 import { Link, useNavigate } from "react-router-dom";
 import { PiWarningCircleBold } from "react-icons/pi";
@@ -9,9 +8,10 @@ import { CustomAlerts, Loading, ProtectedComponent } from "../../../shared/compo
 import StarRatingInput from "../../../shared/components/StarRatingInput";
 import { FaUserGear, FaUserXmark } from "react-icons/fa6";
 import { rolesListConstant } from "../../../shared/constants";
+import { useAttendancesStore } from "../store/useAttendancesStore";
 
 export const Attendances = ({ event, handleAttendancesChange }) => {
-  const { createAttendance, editAttendance, deleteAttendance, isSubmitting, error } = useAttendances();
+  const { createAttendance, editAttendance, deleteAttendance, isSubmitting, error } = useAttendancesStore();
   const [currentAttendance, setCurrentAttendance] = useState(null);
   const { createRating } = useRatings();
   const [rating, setRating] = useState(null);

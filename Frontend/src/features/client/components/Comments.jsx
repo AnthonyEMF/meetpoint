@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useComments } from "../hooks/useComments";
 import { RiDeleteBin5Fill, RiEdit2Fill, RiReplyFill } from "react-icons/ri";
 import { useAuthStore } from "../../security/store";
 import { Link } from "react-router-dom";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { ProtectedComponent } from "../../../shared/components";
 import { rolesListConstant } from "../../../shared/constants";
+import { useCommentsStore } from "../store/useCommentsStore";
 
 export const Comments = ({ event, handleCommentsChange }) => {
-  const { createComment, editComment, deleteComment, isSubmitting, error } = useComments();
+  const { createComment, editComment, deleteComment, isSubmitting, error } = useCommentsStore();
   const [newComment, setNewComment] = useState("");
   const [replyCommentId, setReplyCommentId] = useState(null);
   const [replyContent, setReplyContent] = useState("");

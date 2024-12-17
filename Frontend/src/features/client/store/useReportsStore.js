@@ -36,10 +36,10 @@ export const useReportsStore = create((set) => ({
   },
 
   // Crear un reporte
-  createReport: async (reportData) => {
+  createReport: async (form) => {
     set({ isSubmitting: true, error: null });
     try {
-      const result = await createReportApi(reportData);
+      const result = await createReportApi(form);
       set({ report: result });
     } catch (error) {
       set({ error });
@@ -49,10 +49,10 @@ export const useReportsStore = create((set) => ({
   },
 
   // Editar un reporte
-  editReport: async (id, reportData) => {
+  editReport: async (id, form) => {
     set({ isSubmitting: true, error: null });
     try {
-      const result = await editReportApi(id, reportData);
+      const result = await editReportApi(id, form);
       set({ report: result });
     } catch (error) {
       set({ error });
