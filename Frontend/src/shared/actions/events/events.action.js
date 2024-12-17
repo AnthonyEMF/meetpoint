@@ -23,9 +23,9 @@ export const getEventById = async (id) => {
 }
 
 // Crear
-export const createEventApi = async (eventData) => {
+export const createEventApi = async (form) => {
     try {
-        const {data} = await meetpointApi.post(`/events`, eventData);
+        const {data} = await meetpointApi.post(`/events`, form);
         return data;
     } catch(error) {
         console.error(error);
@@ -34,9 +34,9 @@ export const createEventApi = async (eventData) => {
 }
 
 // Editar 
-export const editEventApi = async (id, eventData) => {
+export const editEventApi = async (id, form) => {
     try {
-        const {data} = await meetpointApi.put(`/events/${id}`, eventData);
+        const {data} = await meetpointApi.put(`/events/${id}`, form);
         return data;
     } catch (error) {
         console.error(error);

@@ -23,9 +23,9 @@ export const getAttendanceById = async (id) => {
 }
 
 // Crear
-export const createAttendanceApi = async (attendanceData) => {
+export const createAttendanceApi = async (form) => {
     try {
-        const {data} = await meetpointApi.post(`/attendances`, attendanceData);
+        const {data} = await meetpointApi.post(`/attendances`, form);
         return data;
     } catch(error) {
         console.error(error);
@@ -34,9 +34,9 @@ export const createAttendanceApi = async (attendanceData) => {
 }
 
 // Editar 
-export const editAttendanceApi = async (id, attendanceData) => {
+export const editAttendanceApi = async (id, form) => {
     try {
-        const {data} = await meetpointApi.put(`/attendances/${id}`, attendanceData);
+        const {data} = await meetpointApi.put(`/attendances/${id}`, form);
         return data;
     } catch (error) {
         console.error(error);

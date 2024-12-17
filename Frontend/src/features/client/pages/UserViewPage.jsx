@@ -6,10 +6,10 @@ import { useAuthStore } from "../../security/store";
 import { CustomAlerts, ProtectedComponent, StarRating } from "../../../shared/components";
 import { rolesListConstant } from "../../../shared/constants";
 import { IoStatsChart } from "react-icons/io5";
-import { useReports } from "../hooks/useReports";
 import { useUsersStore } from "../../admin/store/useUsersStore";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
+import { useReportsStore } from "../store/useReportsStore";
 
 export const UserViewPage = () => {
   const [fetching, setFetching] = useState(true);
@@ -19,7 +19,7 @@ export const UserViewPage = () => {
   const { id } = useParams();
 
   // Propiedades para los reportes
-  const { createReport, isSubmitting } = useReports();
+  const { createReport, isSubmitting } = useReportsStore();
   const [reason, setReason] = useState("");
 
   // Obtener id del usuario en sesión
@@ -91,7 +91,6 @@ export const UserViewPage = () => {
     navigate("/main");
     }, 2000);
   };
-
 
   return (
     <div className="container mx-auto p-6">

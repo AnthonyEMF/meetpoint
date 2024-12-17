@@ -34,9 +34,9 @@ export const getRatingByUserId = async (userId) => {
 }
 
 // Crear
-export const createRatingApi = async (ratingData) => {
+export const createRatingApi = async (form) => {
     try {
-        const {data} = await meetpointApi.post(`/ratings`, ratingData);
+        const {data} = await meetpointApi.post(`/ratings`, form);
         return data;
     } catch(error) {
         console.error(error);
@@ -45,9 +45,9 @@ export const createRatingApi = async (ratingData) => {
 }
 
 // Editar 
-export const editRatingApi = async (id, ratingData) => {
+export const editRatingApi = async (id, form) => {
     try {
-        const {data} = await meetpointApi.put(`/ratings/${id}`, ratingData);
+        const {data} = await meetpointApi.put(`/ratings/${id}`, form);
         return data;
     } catch (error) {
         console.error(error);

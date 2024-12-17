@@ -40,7 +40,7 @@ export const useMembershipsStore = create((set) => ({
     try {
       const result = await getMembershipStateApi(userId);
       if (result.status) {
-        set({ membershipState: result.data }); // Actualiza el estado global con el valor true/false
+        set({ membershipState: result.data });
       } else {
         throw new Error("Error al obtener el estado de la membresía");
       }

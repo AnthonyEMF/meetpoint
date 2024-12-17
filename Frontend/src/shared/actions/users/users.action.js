@@ -55,7 +55,7 @@ export const deleteUserApi = async (id) => {
     }
 }
 
-// Editar 
+// Bloquear
 export const toggleBlockUserApi = async (id) => {
     try {
         const {data} = await meetpointApi.put(`/users/block/${id}`);

@@ -1,9 +1,9 @@
 import { formatDate } from "../../../shared/utils";
-import { useReports } from "../../client/hooks/useReports";
 import { useState } from "react";
+import { useReportsStore } from "../../client/store/useReportsStore";
 
 export const ReportDashboardRowItem = ({ report, handleReportsChange }) => {
-  const { deleteReport, isSubmitting } = useReports();
+  const { deleteReport, isSubmitting } = useReportsStore();
   const [alertData, setAlertData] = useState({ message: "", type: "", show: false });
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
 

@@ -23,9 +23,9 @@ export const getCommentById = async (id) => {
 }
 
 // Crear
-export const createCommentApi = async (commentData) => {
+export const createCommentApi = async (form) => {
     try {
-        const {data} = await meetpointApi.post(`/comments`, commentData);
+        const {data} = await meetpointApi.post(`/comments`, form);
         return data;
     } catch(error) {
         console.error(error);
@@ -34,9 +34,9 @@ export const createCommentApi = async (commentData) => {
 }
 
 // Editar 
-export const editCommentApi = async (id, commentData) => {
+export const editCommentApi = async (id, form) => {
     try {
-        const {data} = await meetpointApi.put(`/comments/${id}`, commentData);
+        const {data} = await meetpointApi.put(`/comments/${id}`, form);
         return data;
     } catch (error) {
         console.error(error);

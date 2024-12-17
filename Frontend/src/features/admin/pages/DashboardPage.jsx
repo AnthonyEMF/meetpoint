@@ -7,14 +7,14 @@ import { FaComments } from "react-icons/fa";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { MdAssignment } from "react-icons/md";
 import { IoPeopleSharp } from "react-icons/io5";
-import { useReports } from "../../client/hooks";
+import { useReportsStore } from "../../client/store/useReportsStore";
 
 export const DashboardPage = () => {
   const loadData = useDashboardStore((state) => state.loadData);
   const dashboardData = useDashboardStore((state) => state.dashboardData);
   const [isLoading, setIsLoading] = useState(true);
   // reportes con paginación
-  const { reports, loadReports } = useReports();
+  const { reports, loadReports } = useReportsStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [fetching, setFetching] = useState(true);
