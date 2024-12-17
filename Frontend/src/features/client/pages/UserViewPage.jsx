@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useUsers } from "../hooks/useUsers";
 import { formatDate } from "../../../shared/utils";
 import { useAuthStore } from "../../security/store";
 import { CustomAlerts, ProtectedComponent, StarRating } from "../../../shared/components";
@@ -13,7 +12,7 @@ import { useReportsStore } from "../store/useReportsStore";
 
 export const UserViewPage = () => {
   const [fetching, setFetching] = useState(true);
-  const { user, loadUserById } = useUsers();
+  const { user, loadUserById } = useUsersStore();
   const { deleteUser } = useUsersStore();
   const navigate = useNavigate();
   const { id } = useParams();

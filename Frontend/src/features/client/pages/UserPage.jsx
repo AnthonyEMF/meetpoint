@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useUsers } from "../hooks/useUsers";
 import { formatDate } from "../../../shared/utils";
 import { useAuthStore } from "../../security/store/useAuthStore";
 import { CustomAlerts, StarRating } from "../../../shared/components";
@@ -14,11 +13,10 @@ import { MdOutlineWorkspacePremium } from "react-icons/md";
 export const UserPage = () => {
   const logout = useAuthStore((state) => state.logout);
   const [fetching, setFetching] = useState(true);
-  const { user, loadUserById } = useUsers();
+  const { user, loadUserById } = useUsersStore();
   const { deleteUser } = useUsersStore();
   const navigate = useNavigate();
   const [alert, setAlert] = useState(null);
-
 
   // Obtener id del usuario en sesión
   const getUserId = useAuthStore((state) => state.getUserId);

@@ -2,6 +2,11 @@ import { create } from "zustand";
 import { createUserApi, deleteUserApi, editUserApi, getUserById, getUsersList, toggleBlockUserApi } from "../../../shared/actions/users/users.action";
 
 export const useUsersStore = create((set, get) => ({
+  user: null,
+  users: {},
+  isLoading: false,
+  isSubmitting: false,
+  error: null,
   selectedUser: {},
   usersData: {
     hasNextPage: false,
@@ -13,18 +18,33 @@ export const useUsersStore = create((set, get) => ({
     items: [],
   },
 
-  loadUsers: async (searchTerm = "", page = 1) => {
+  // Cargar todos los usuarios
+  loadUsers: async (searchTerm, page) => {
+    set({ isLoading: true, error: null });
     try {
       const result = await getUsersList(searchTerm, page);
-      if (result.status) {
-        set({ usersData: result.data });
-      } else {
-        set({ usersData: null });
-        throw new Error("Error al cargar los usuarios");
-      }
+      set({ users: result });
+      return result;
     } catch (error) {
-      console.error(error);
-      set({ usersData: null });
+      set({ error });
+      throw error;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // Cargar usuario por ID
+  loadUserById: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const result = await getUserById(id);
+      set({ user: result });
+      return result;
+    } catch (error) {
+      set({ error });
+      throw error;
+    } finally {
+      set({ isLoading: false });
     }
   },
 

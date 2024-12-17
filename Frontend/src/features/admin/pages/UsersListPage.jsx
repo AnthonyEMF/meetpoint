@@ -1,12 +1,12 @@
 import { Pagination } from "../../../shared/components/Pagination";
-import { useUsers } from "../../client/hooks/useUsers";
 import { useEffect, useState } from "react";
 import { UserRowItem } from "../components/UserRowItem";
 import { Link } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
+import { useUsersStore } from "../store/useUsersStore";
 
 export const UsersListPage = () => {
-  const { users, loadUsers, isLoading } = useUsers();
+  const { users, loadUsers, isLoading } = useUsersStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [fetching, setFetching] = useState(true);

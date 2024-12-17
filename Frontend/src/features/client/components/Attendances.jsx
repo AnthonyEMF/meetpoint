@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../../security/store";
 import { Link } from "react-router-dom";
 import { PiWarningCircleBold } from "react-icons/pi";
-import { useUsers } from "../hooks/useUsers";
 import { CustomAlerts, Loading, ProtectedComponent } from "../../../shared/components";
 import StarRatingInput from "../../../shared/components/StarRatingInput";
 import { FaUserGear, FaUserXmark } from "react-icons/fa6";
 import { rolesListConstant } from "../../../shared/constants";
 import { useAttendancesStore } from "../store/useAttendancesStore";
 import { useRatingsStore } from "../store/useRatingsStore";
+import { useUsersStore } from "../../admin/store/useUsersStore";
 
 export const Attendances = ({ event, handleAttendancesChange }) => {
   const { createAttendance, editAttendance, deleteAttendance, isSubmitting, error } = useAttendancesStore();
@@ -16,7 +16,7 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
   const { createRating } = useRatingsStore();
   const [rating, setRating] = useState(null);
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
-  const { user, loadUserById } = useUsers();
+  const { user, loadUserById } = useUsersStore();
   const [fetching, setFetching] = useState(true);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const getUserId = useAuthStore((state) => state.getUserId);
