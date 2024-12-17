@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { useEvents } from "../hooks/useEvents";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCategories } from "../hooks/useCategories";
 import { CustomAlerts } from "../../../shared/components";
+import { useEventsStore } from "../store/useEventsStore";
 
 export const EditEventPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [fetching, setFetching] = useState(true);
   const { categories, loadCategories, isLoading } = useCategories();
-  const { event, loadEventById, editEvent, isSubmitting, error } = useEvents();
+  const { event, loadEventById, editEvent, isSubmitting, error } = useEventsStore();
   const [formData, setFormData] = useState({
     title: "",
     categoryId: "",

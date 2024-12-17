@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { useEvents } from "../hooks/useEvents";
 import { useNavigate } from "react-router-dom";
 import { useCategories } from "../hooks/useCategories";
 import { CustomAlerts } from "../../../shared/components";
+import { useEventsStore } from "../store/useEventsStore";
 
 export const CreateEventPage = () => {
   const navigate = useNavigate();
   const [fetching, setFetching] = useState(true);
   const { categories, loadCategories, isLoading } = useCategories();
-  const { createEvent, isSubmitting, error } = useEvents();
+  const { createEvent, isSubmitting, error } = useEventsStore();
   const [eventData, setEventData] = useState({
     categoryId: "",
     title: "",

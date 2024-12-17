@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { useCategoriesStore } from "../store/useCategoriesStore";
-import { useEvents } from "../../client/hooks";
 import { useEffect, useState } from "react";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
+import { useEventsStore } from "../../client/store/useEventsStore";
 
 export const CategoriesRowItem = ({ category, handleCategoriesChange }) => {
   const { deleteCategory } = useCategoriesStore();
-  const { events, loadEvents } = useEvents();
+  const { events, loadEvents } = useEventsStore();
   const [fetching, setFetching] = useState(true);
   const [alertData, setAlertData] = useState({ message: "", type: "", show: false });
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);

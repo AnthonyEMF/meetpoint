@@ -3,3 +3,4 @@ export * from './useReportsStore';
 export * from './useAttendancesStore';
 export * from './useCommentsStore';
 export * from './useRatingsStore';
+export * from './useEventsStore';

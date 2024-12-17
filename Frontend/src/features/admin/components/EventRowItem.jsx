@@ -2,7 +2,6 @@ import { FaRegComment } from "react-icons/fa";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { formatDateShort } from "../../../shared/utils";
-// import { formatDateShort } from "../../../shared/utils"
 
 export const EventRowItem = ({ event }) => {
   return (

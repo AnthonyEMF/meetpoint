@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Pagination } from "../../../shared/components";
-import { useEvents } from "../../client/hooks";
 import { EventRowItem } from "../components";
 import { Link } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
+import { useEventsStore } from "../../client/store/useEventsStore";
 
 export const EventListPage = () => {
-  const { events, loadEvents, isLoading } = useEvents();
+  const { events, loadEvents, isLoading } = useEventsStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [fetching, setFetching] = useState(true);

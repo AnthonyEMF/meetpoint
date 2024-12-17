@@ -1,5 +1,4 @@
 import { formatDate } from "../../../shared/utils";
-import { useEvents } from "../hooks";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Attendances, Comments, EventPageSkeleton } from "../components";
@@ -9,10 +8,11 @@ import { FaRegCalendarXmark } from "react-icons/fa6";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { rolesListConstant } from "../../../shared/constants";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
+import { useEventsStore } from "../store/useEventsStore";
 
 export const EventPage = () => {
   const { id } = useParams();
-  const { event, loadEventById, deleteEvent, isLoading } = useEvents();
+  const { event, loadEventById, deleteEvent, isLoading } = useEventsStore();
   const [fetching, setFetching] = useState(true);
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);

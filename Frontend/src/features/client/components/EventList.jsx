@@ -1,11 +1,11 @@
-import { useEvents } from "../hooks";
 import { useEffect, useState } from "react";
 import { EventListItem } from "./EventListItem";
 import { Pagination } from "../../../shared/components";
 import { EventListSkeleton } from "./EventListSkeleton";
+import { useEventsStore } from "../store/useEventsStore";
 
 export const EventList = ({ selectedCategory }) => {
-  const { events, loadEvents, isLoading } = useEvents();
+  const { events, loadEvents, isLoading } = useEventsStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState(selectedCategory || "");
   const [fetching, setFetching] = useState(true);
