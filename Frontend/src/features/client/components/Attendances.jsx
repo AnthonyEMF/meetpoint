@@ -2,28 +2,30 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../../security/store";
 import { Link } from "react-router-dom";
 import { PiWarningCircleBold } from "react-icons/pi";
-import { CustomAlerts, Loading, ProtectedComponent } from "../../../shared/components";
-import StarRatingInput from "../../../shared/components/StarRatingInput";
+import { Loading, ProtectedComponent } from "../../../shared/components";
 import { FaUserGear, FaUserXmark } from "react-icons/fa6";
 import { rolesListConstant } from "../../../shared/constants";
 import { useAttendancesStore } from "../store/useAttendancesStore";
 import { useRatingsStore } from "../store/useRatingsStore";
 import { useUsersStore } from "../../admin/store/useUsersStore";
+import { IoMdHappy } from "react-icons/io";
+import StarRatingInput from "../../../shared/components/StarRatingInput";
+import Swal from "sweetalert2";
 
 export const Attendances = ({ event, handleAttendancesChange }) => {
+  const [fetching, setFetching] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Funciones para asistencias, autenticación y ratings
   const { createAttendance, editAttendance, deleteAttendance, isSubmitting, error } = useAttendancesStore();
   const [currentAttendance, setCurrentAttendance] = useState(null);
   const { createRating } = useRatingsStore();
   const [rating, setRating] = useState(null);
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
   const { user, loadUserById } = useUsersStore();
-  const [fetching, setFetching] = useState(true);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const getUserId = useAuthStore((state) => state.getUserId);
   const loggedUserId = getUserId();
-  const [alertMessage, setAlertMessage] = useState(null);
-
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (isLoading || isRatingSubmitted) {
@@ -40,7 +42,13 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
       (attendance) => attendance.userId === loggedUserId
     );
     setCurrentAttendance(userAttendance || null);
-  }, [event.data.attendances, loggedUserId, loadUserById, isLoading, isRatingSubmitted]);
+  }, [
+    event.data.attendances,
+    loggedUserId,
+    loadUserById,
+    isLoading,
+    isRatingSubmitted,
+  ]);
 
   const hasRated = user?.data?.madeRatings?.some(
     (rating) => rating.eventId === event.data.id
@@ -83,10 +91,22 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
   };
 
   const handleDeleteAttendanceFromList = async (attendanceId) => {
-    const result = await deleteAttendance(attendanceId);
-    if (result) {
-      if (handleAttendancesChange) handleAttendancesChange();
-    }
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará al usuario de la lista de asistentes",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const result = await deleteAttendance(attendanceId);
+        if (result) {
+          if (handleAttendancesChange) handleAttendancesChange();
+        }
+      }
+    });
   };
 
   const handleRatingChange = (e) => {
@@ -95,7 +115,12 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
 
   const handleSubmitRating = async () => {
     if (rating < 1 || rating > 5) {
-      setAlertMessage({ type: "warning", message: "Ingresa una calificación." }); // Usamos el CustomAlert
+      Swal.fire({
+        title: "Error",
+        text: "Ingresa una calificación",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
@@ -107,7 +132,12 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
 
     await createRating(ratingData);
     setIsRatingSubmitted(true);
-    setAlertMessage({ type: "success", message: "¡Gracias por tu calificación!" }); // Usamos el CustomAlert
+    Swal.fire({
+      title: "Rating registrado",
+      text: "¡Gracias por tu calificación!",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
   };
 
   if (isLoading) return <Loading />;
@@ -115,10 +145,9 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
       <h2 className="text-2xl font-bold">Lista de Asistentes</h2>
-      <div className="font-semibold text-lg text-gray-600 mb-2">{event.data.attendancesCount} asistencias</div>
-
-      {alertMessage && <CustomAlerts message={alertMessage.message} type={alertMessage.type} />}
-
+      <div className="font-semibold text-lg text-gray-600 mb-2">
+        {event.data.attendancesCount} asistencias
+      </div>
       {/* Mostrar si el usuario esta autenticado */}
       {isAuthenticated ? (
         <div>
@@ -129,8 +158,12 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
                 <div key={attendance.id}>
                   <div className="bg-gray-200 p-4 rounded-lg flex justify-between items-center">
                     {/* Info del asistente */}
-                    <Link 
-                      to={attendance.userId === loggedUserId ? "/user" : `/user/view/${attendance.userId}`}
+                    <Link
+                      to={
+                        attendance.userId === loggedUserId
+                          ? "/user"
+                          : `/user/view/${attendance.userId}`
+                      }
                       className="flex items-center"
                     >
                       <img
@@ -155,41 +188,51 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
                   </div>
 
                   {/* Botón para expulsar asistentes (ORGANIZADOR) */}
-                  {attendance.userId != loggedUserId && event.data.organizerId === loggedUserId ?  ( 
-                    <button 
+                  {attendance.userId != loggedUserId &&
+                  event.data.organizerId === loggedUserId ? (
+                    <button
                       className="text-red-500 font-semibold hover:underline flex items-center"
-                      onClick={() => handleDeleteAttendanceFromList(attendance.id)}
+                      onClick={() =>
+                        handleDeleteAttendanceFromList(attendance.id)
+                      }
                       disabled={isSubmitting}
                     >
-                      <FaUserXmark className="mt-1 mx-1" />Expulsar asistente 
+                      <FaUserXmark className="mt-1 mx-1" />
+                      Expulsar asistente
                     </button>
                   ) : (
                     <div>
                       {loggedUserId === attendance.userId && (
-                      <span className="text-green-500 font-semibold flex items-center">
-                        <FaUserGear className="mt-1 mx-1" />Mi asistencia
-                      </span>
+                        <span className="text-green-500 font-semibold flex items-center">
+                          <FaUserGear className="mt-1 mx-1" />
+                          Mi asistencia
+                        </span>
                       )}
                     </div>
                   )}
 
                   {/* Botón para expulsar asistentes (ADMIN) */}
                   <ProtectedComponent requiredRoles={[rolesListConstant.ADMIN]}>
-                  {attendance.userId != loggedUserId && event.data.organizerId != loggedUserId &&  ( 
-                    <button 
-                      className="text-red-500 font-semibold hover:underline flex items-center"
-                      onClick={() => handleDeleteAttendanceFromList(attendance.id)}
-                      disabled={isSubmitting}
-                    >
-                      <FaUserXmark className="mt-1 mx-1" />Expulsar asistente 
-                    </button>
-                  )}
+                    {attendance.userId != loggedUserId &&
+                      event.data.organizerId != loggedUserId && (
+                        <button
+                          className="text-red-500 font-semibold hover:underline flex items-center"
+                          onClick={() =>
+                            handleDeleteAttendanceFromList(attendance.id)
+                          }
+                          disabled={isSubmitting}
+                        >
+                          <FaUserXmark className="mt-1 mx-1" />
+                          Expulsar asistente
+                        </button>
+                      )}
                   </ProtectedComponent>
-
                 </div>
               ))
             ) : (
-              <span className="text-lg text-gray-600 font-semibold">No hay asistentes registrados.</span>
+              <span className="text-lg text-gray-600 font-semibold">
+                No hay asistentes registrados.
+              </span>
             )}
           </div>
           {/* Crear, editar, eliminar asistencia si la fecha del evento no ha expirado */}
@@ -245,31 +288,47 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
         </div>
       ) : (
         <div className="">
-          <Link to="/security/login" className="text-blue-700 text-lg font-semibold hover:underline">
-            <span className="flex"><PiWarningCircleBold size={22} className="mt-1 mr-1"/>Iniciar sesión para visualizar la lista de asistentes</span>
+          <Link
+            to="/security/login"
+            className="text-blue-700 text-lg font-semibold hover:underline"
+          >
+            <span className="flex">
+              <PiWarningCircleBold size={22} className="mt-1 mr-1" />
+              Iniciar sesión para visualizar la lista de asistentes
+            </span>
           </Link>
         </div>
       )}
 
       {/* Mostrar opción para calificar con estrellas */}
-      {currentAttendance && event.data.organizerId !== loggedUserId && new Date(event.data.date) < new Date() && !fetching && (
-        <div className="mt-4">
-          {hasRated || isRatingSubmitted ? (
-            <p className="text-center text-xl font-semibold text-blue-600">
-              ¡Gracias por tu calificación, esperamos que asistas al próximo evento!
-            </p>
-          ) : (
-            <>
-              <h2 className="text-2xl font-bold mb-3 text-center">
-                ¿Qué calificación le das a este evento?
-              </h2>
-              <div className="flex items-center gap-2 justify-center">
-                <StarRatingInput handleSubmitRating={handleSubmitRating} handleRatingChange={handleRatingChange} />
+      {currentAttendance &&
+        event.data.organizerId !== loggedUserId &&
+        new Date(event.data.date) < new Date() &&
+        !fetching && (
+          <div className="mt-4">
+            {hasRated || isRatingSubmitted ? (
+              <div className="px-40">
+                <div className="flex items-center justify-center text-center text-xl py-2 mt-6 rounded-full font-semibold bg-white text-blue-500 border-2 border-blue-500">
+                  ¡Gracias por tu calificación, esperamos que asistas al próximo
+                  evento!
+                  <IoMdHappy size={24} className="ml-1" />
+                </div>
               </div>
-            </>
-          )}
-        </div>
-      )}
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold mb-3 text-center">
+                  ¿Qué calificación le das a este evento?
+                </h2>
+                <div className="flex items-center gap-2 justify-center">
+                  <StarRatingInput
+                    handleSubmitRating={handleSubmitRating}
+                    handleRatingChange={handleRatingChange}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
       {error && <p className="text-red-500 mt-4">{error.message}</p>}
     </div>

@@ -1,13 +1,11 @@
-import { useState } from "react";
-import { CustomAlerts } from "../../../shared/components";
 import { useUsersStore } from "../store/useUsersStore";
 import { useFormik } from "formik";
 import { userInitValues, userValidationSchema } from "../forms/user.data";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const CreateUsersPage = () => {
   const createUser = useUsersStore((state) => state.createUser);
-  const [alertData, setAlertData] = useState({ message: "", type: "", show: false });
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -17,17 +15,20 @@ export const CreateUsersPage = () => {
     onSubmit: async (formValues) => {
       try {
         await createUser(formValues);
-        setAlertData({
-          message: "Usuario creado correctamente.",
-          type: "success",
-          show: true,
+        Swal.fire({
+          title: "¡Éxito!",
+          text: "Usuario creado correctamente",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate("/administration/users-list");
         });
-        navigate("/administration/users-list");
       } catch (error) {
-        setAlertData({
-          message: "Hubo un error al crear el usuario.",
-          type: "error",
-          show: true,
+        Swal.fire({
+          title: "Error",
+          text: "Ocurrió un problema al crear usuario. Intenta nuevamente",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
     },
@@ -160,6 +161,29 @@ export const CreateUsersPage = () => {
           <div className="mb-2">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Confirmar Contraseña
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirmar Contraseña"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.confirmPassword}
+            </div>
+          )}
+
+          <div className="mb-2">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="role"
             >
               Rol
@@ -171,7 +195,7 @@ export const CreateUsersPage = () => {
               onChange={formik.handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option value="">Seleccionar</option>
+              <option value="">Seleccionar rol</option>
               <option value="ADMIN">Administrador</option>
               <option value="USER">Usuario</option>
             </select>
@@ -191,14 +215,6 @@ export const CreateUsersPage = () => {
             </button>
           </div>
         </form>
-
-        {alertData.show && (
-            <CustomAlerts
-              message={alertData.message}
-              type={alertData.type}
-              onClose={() => setAlertData((prev) => ({ ...prev, show: false }))}
-            />
-          )}
       </main>
     </div>
   );

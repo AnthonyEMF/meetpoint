@@ -2,30 +2,28 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../../shared/utils";
 import { useAuthStore } from "../../security/store";
-import { CustomAlerts, ProtectedComponent, StarRating } from "../../../shared/components";
+import { ProtectedComponent, StarRating } from "../../../shared/components";
 import { rolesListConstant } from "../../../shared/constants";
 import { IoStatsChart } from "react-icons/io5";
 import { useUsersStore } from "../../admin/store/useUsersStore";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { useReportsStore } from "../store/useReportsStore";
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import Swal from "sweetalert2";
 
 export const UserViewPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [fetching, setFetching] = useState(true);
+
+  // Funciones de usuarios y reportes
   const { user, loadUserById } = useUsersStore();
   const { deleteUser } = useUsersStore();
-  const navigate = useNavigate();
-  const { id } = useParams();
-
-  // Propiedades para los reportes
   const { createReport, isSubmitting } = useReportsStore();
   const [reason, setReason] = useState("");
-
-  // Obtener id del usuario en sesión
   const getUserId = useAuthStore((state) => state.getUserId);
-  const loggedUserId = getUserId();
-
-  const [alert, setAlert] = useState(null);
+  const loggedUserId = getUserId(); // id del usuario en sesión
 
   useEffect(() => {
     if (fetching) {
@@ -36,23 +34,42 @@ export const UserViewPage = () => {
 
   // Eliminar usuario
   const handleDeleteUser = async () => {
-    try {
-      await deleteUser(id);
-      setAlert({
-        message: "Usuario eliminado correctamente.",
-        type: "success",
-        onClose: () => setAlert(null), // Cierra la alerta
-      });
-      setTimeout(() => {
-      navigate("/administration/users-list");
-    }, 2000);
-    } catch (error) {
-      setAlert({
-        message: "Error al eliminar el usuario.",
-        type: "error",
-        onClose: () => setAlert(null),
-      });
-    }
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará el usuario de forma permanente",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteUser(id); // Llamada al servicio de eliminación
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "El usuario ha sido eliminado correctamente",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+          navigate("/administration/users-list");
+        } catch (error) {
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo eliminar el usuario. Intenta nuevamente",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: "Cancelado",
+          text: "El usuario no fue eliminado",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      }
+    });
   };
 
   // Verificar si el usuario en sesión ya ha reportado al usuario
@@ -67,10 +84,11 @@ export const UserViewPage = () => {
   // Crear un nuevo reporte
   const handleCreateReport = async () => {
     if (reason.length < 10) {
-      setAlert({
-        message: "El motivo del reporte debe tener al menos 10 caracteres.",
-        type: "warning",
-        onClose: () => setAlert(null),
+      Swal.fire({
+        title: "Error",
+        text: "El motivo del reporte debe tener al menos 10 caracteres",
+        icon: "error",
+        confirmButtonText: "OK",
       });
       return;
     }
@@ -81,21 +99,18 @@ export const UserViewPage = () => {
     };
 
     await createReport(reportData);
-    setAlert({
-      message: "El usuario ha sido reportado, pronto tomaremos acciones al respecto.",
-      type: "info",
-      onClose: () => setAlert(null),
+    Swal.fire({
+      title: "Usuario reportado correctamente",
+      text: "Pronto tomaremos acciones al respecto",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then(() => {
+      loadUserById(id);
     });
-    setTimeout(() => {
-    navigate("/main");
-    }, 2000);
   };
 
   return (
     <div className="container mx-auto p-6">
-
-    {alert && <CustomAlerts {...alert} />}
-
       {/* Información de Usuario */}
       <div className="bg-white shadow-lg rounded-lg p-6 mb-4 flex items-center justify-between">
         <div className="flex items-center">
@@ -110,7 +125,10 @@ export const UserViewPage = () => {
             <h2 className="text-2xl flex font-semibold">
               {user?.data?.firstName} {user?.data?.lastName}
               {user?.data?.membership && ( // Mostrar insignia de usuario premium
-                <MdOutlineWorkspacePremium size={32} className="text-yellow-500 ml-1"/>
+                <MdOutlineWorkspacePremium
+                  size={32}
+                  className="text-yellow-500 ml-1"
+                />
               )}
             </h2>
             <p className="py-1 text-gray-700">{user?.data?.email}</p>
@@ -129,7 +147,7 @@ export const UserViewPage = () => {
           <ProtectedComponent requiredRoles={[rolesListConstant.ADMIN]}>
             <Link to={`/administration/user/edit/${id}`}>
               <button className="flex items-center justify-center bg-blue-600 text-white w-full my-1 mb-4 py-2 px-10 rounded hover:bg-blue-500">
-                <RiEdit2Fill className="mr-2" size={18}/>
+                <RiEdit2Fill className="mr-2" size={18} />
                 Editar Usuario
               </button>
             </Link>
@@ -137,8 +155,8 @@ export const UserViewPage = () => {
               <button
                 className="flex items-center justify-center bg-red-600 text-white w-full my-1 py-2 px-10 rounded hover:bg-red-500"
                 onClick={handleDeleteUser}
-                >
-                <RiDeleteBin5Fill className="mr-2" size={18}/>
+              >
+                <RiDeleteBin5Fill className="mr-2" size={18} />
                 Eliminar Usuario
               </button>
             )}
@@ -223,9 +241,9 @@ export const UserViewPage = () => {
       {loggedUserId !== id && ( // Validar que no se pueda reportar a si mismo
         <div>
           {hasReported ? (
-            <h2 className="text-xl text-center text-white mt-4 font-semibold">
-              El usuario ha sido reportado, pronto tomaremos acciones al
-              respecto
+            <h2 className="flex items-center justify-center text-xl py-2 mt-6 font-semibold rounded-lg bg-red-500 text-center text-white">
+              <IoMdInformationCircleOutline size={23} className="mr-1" />
+              El usuario ha sido reportado, pronto tomaremos acciones al respecto
             </h2>
           ) : (
             <div>

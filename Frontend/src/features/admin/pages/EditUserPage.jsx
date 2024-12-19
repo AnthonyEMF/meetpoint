@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { CustomAlerts } from "../../../shared/components";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUsersStore } from "../store/useUsersStore";
 import { useFormik } from "formik";
 import { userInitValues, userValidationSchema } from "../forms/user.data";
+import Swal from "sweetalert2";
 
 export const EditUserPage = () => {
   let { id } = useParams();
+  const navigate = useNavigate();
   const selectedUser = useUsersStore((state) => state.selectedUser);
   const getUser = useUsersStore((state) => state.getUser);
   const editUser = useUsersStore((state) => state.editUser);
   const [fetching, setFetching] = useState(true);
-  const [alertData, setAlertData] = useState({ message: "", type: "", show: false }); // Estado del alert
 
   useEffect(() => {
     if (fetching && id) {
       getUser(id).then(() => {
-        if (selectedUser && selectedUser.firstName && selectedUser.lastName && selectedUser.location && selectedUser.email) {
+        if (
+          selectedUser &&
+          selectedUser.firstName &&
+          selectedUser.lastName &&
+          selectedUser.location &&
+          selectedUser.email
+        ) {
           formik.setValues({
             id: id,
             firstName: selectedUser.firstName || "",
@@ -30,7 +36,7 @@ export const EditUserPage = () => {
         }
       });
     }
-  }, [fetching, id, selectedUser]);  
+  }, [fetching, id, selectedUser]);
 
   const formik = useFormik({
     initialValues: userInitValues(),
@@ -39,16 +45,20 @@ export const EditUserPage = () => {
     onSubmit: (formValues) => {
       try {
         editUser(id, formValues);
-        setAlertData({
-          message: "Usuario actualizado correctamente.",
-          type: "success",
-          show: true,
+        Swal.fire({
+          title: "¡Éxito!",
+          text: "Usuario actualizado correctamente",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate(`/user/view/${id}`);
         });
       } catch (error) {
-        setAlertData({
-          message: "Hubo un error al actualizar el usuario.",
-          type: "error",
-          show: true,
+        Swal.fire({
+          title: "Error",
+          text: "Ocurrió un problema al actualizar el usuario. Intenta nuevamente",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
     },
@@ -81,7 +91,9 @@ export const EditUserPage = () => {
             />
           </div>
           {formik.touched.firstName && formik.errors.firstName && (
-            <div className="text-red-500 text-sm mb-2">{formik.errors.firstName}</div>
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.firstName}
+            </div>
           )}
 
           <div className="mb-2">
@@ -102,7 +114,9 @@ export const EditUserPage = () => {
             />
           </div>
           {formik.touched.lastName && formik.errors.lastName && (
-            <div className="text-red-500 text-sm mb-2">{formik.errors.lastName}</div>
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.lastName}
+            </div>
           )}
 
           <div className="mb-2">
@@ -123,7 +137,9 @@ export const EditUserPage = () => {
             />
           </div>
           {formik.touched.location && formik.errors.location && (
-            <div className="text-red-500 text-sm mb-2">{formik.errors.location}</div>
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.location}
+            </div>
           )}
 
           <div className="mb-2">
@@ -144,7 +160,9 @@ export const EditUserPage = () => {
             />
           </div>
           {formik.touched.email && formik.errors.email && (
-            <div className="text-red-500 text-sm mb-2">{formik.errors.email}</div>
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.email}
+            </div>
           )}
 
           <div className="mb-2">
@@ -165,7 +183,32 @@ export const EditUserPage = () => {
             />
           </div>
           {formik.touched.password && formik.errors.password && (
-            <div className="text-red-500 text-sm mb-2">{formik.errors.password}</div>
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.password}
+            </div>
+          )}
+
+          <div className="mb-2">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Confirmar Contraseña
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirmar Contraseña"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.confirmPassword}
+            </div>
           )}
 
           <div className="mb-2">
@@ -182,13 +225,15 @@ export const EditUserPage = () => {
               onChange={formik.handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option value="">Seleccionar</option>
+              <option value="">Seleccionar rol</option>
               <option value="ADMIN">Administrador</option>
               <option value="USER">Usuario</option>
             </select>
           </div>
           {formik.touched.role && formik.errors.role && (
-            <div className="text-red-500 text-sm mb-2">{formik.errors.role}</div>
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.role}
+            </div>
           )}
 
           <div className="flex items-center justify-center">
@@ -200,14 +245,6 @@ export const EditUserPage = () => {
             </button>
           </div>
         </form>
-        {/* Mostrar el alert si está habilitado */}
-        {alertData.show && (
-          <CustomAlerts
-            message={alertData.message}
-            type={alertData.type}
-            onClose={() => setAlertData((prev) => ({ ...prev, show: false }))}
-          />
-        )}
       </main>
     </div>
   );

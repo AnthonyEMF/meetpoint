@@ -8,6 +8,7 @@ export const userInitValues = () => ({
   email: "",
   role: "",
   password: "",
+  confirmPassword: '',
 });
 
 export const userValidationSchema = () =>
@@ -31,4 +32,7 @@ export const userValidationSchema = () =>
         .matches(/[A-Z]/, 'La contraseña debe contener al menos una letra mayúscula.')
         .matches(/\d/, 'La contraseña debe contener al menos un número.')
         .matches(/[@$!%*?&#]/, 'La contraseña debe contener al menos un carácter especial.'),
+    confirmPassword: Yup.string()
+        .required('Confirmar la contraseña es requerido.')
+        .oneOf([Yup.ref('password'), null], 'Las contraseñas deben coincidir.')
 });

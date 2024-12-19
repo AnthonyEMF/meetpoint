@@ -11,11 +11,13 @@ import { StarRating } from "../../../shared/components";
 import { IoStatsChart } from "react-icons/io5";
 
 export const Sidebar = ({ onCategorySelect }) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const logout = useAuthStore((state) => state.logout);
+  const [fetching, setFetching] = useState(true);
+
+  // Funciones de categorías y usuarios
   const { user, loadUserById } = useUsers();
   const { categories, loadCategories, isLoading } = useCategories();
-  const [fetching, setFetching] = useState(true);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const logout = useAuthStore((state) => state.logout);
 
   // Obtener id del usuario en sesión
   const getUserId = useAuthStore((state) => state.getUserId);

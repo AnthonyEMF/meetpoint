@@ -3,25 +3,24 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Attendances, Comments, EventPageSkeleton } from "../components";
 import { useAuthStore } from "../../security/store";
-import { CustomAlerts, ProtectedComponent } from "../../../shared/components";
+import { ProtectedComponent } from "../../../shared/components";
 import { FaRegCalendarXmark } from "react-icons/fa6";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { rolesListConstant } from "../../../shared/constants";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
 import { useEventsStore } from "../store/useEventsStore";
+import Swal from "sweetalert2";
 
 export const EventPage = () => {
   const { id } = useParams();
-  const { event, loadEventById, deleteEvent, isLoading } = useEventsStore();
-  const [fetching, setFetching] = useState(true);
   const navigate = useNavigate();
+  const [fetching, setFetching] = useState(true);
+
+  // Funciones para eventos y autenticación
+  const { event, loadEventById, deleteEvent, isLoading } = useEventsStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
-  // Obtener id del usuario en sesión
   const getUserId = useAuthStore((state) => state.getUserId);
-  const loggedUserId = getUserId();
-
-  const [showAlert, setShowAlert] = useState(false);
+  const loggedUserId = getUserId(); // id del usuario en sesión
 
   useEffect(() => {
     if (fetching) {
@@ -38,7 +37,6 @@ export const EventPage = () => {
   
   // Verificar si el usuario en sesión es el organizador del evento
   const isOrganizer = loggedUserId === event.data.organizerId;
-  
 
   // Editar el evento
   const handleEditEvent = () => {
@@ -47,13 +45,42 @@ export const EventPage = () => {
 
   // Eliminación del evento
   const handleDeleteEvent = async () => {
-    setShowAlert(true); // Mostrar alerta personalizada
-  };
-
-  const confirmDeleteEvent = async () => {
-    await deleteEvent(event.data.id);
-    setShowAlert(false); // Ocultar alerta
-    navigate("/main");
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará el evento de forma permanente",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteEvent(event.data.id); // Llamada al servicio de eliminación
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "El evento ha sido eliminado correctamente",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+          navigate("/main");
+        } catch (error) {
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo eliminar el evento. Intenta nuevamente",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: "Cancelado",
+          text: "El evento no fue eliminado",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      }
+    });
   };
 
   const handleAttendancesChange = async () => {
@@ -66,14 +93,6 @@ export const EventPage = () => {
 
   return (
     <div className="container mx-auto p-6">
-      {showAlert && (
-        <CustomAlerts
-          message="¿Está seguro de que desea eliminar este evento?"
-          type="warning"
-          onConfirm={confirmDeleteEvent}
-          onClose={() => setShowAlert(false)}
-        />
-      )}
 
       {/* Información del Evento */}
       {isLoading ? (
@@ -178,13 +197,11 @@ export const EventPage = () => {
       )}
 
       {/* Lista de Asistentes */}
-      <Attendances
-        event={event}
-        handleAttendancesChange={handleAttendancesChange}
-      />
+      <Attendances event={event} handleAttendancesChange={handleAttendancesChange} />
 
       {/* Sección de Comentarios */}
       <Comments event={event} handleCommentsChange={handleCommentsChange} />
+
     </div>
   );
 };

@@ -1,16 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCategoriesStore } from "../store/useCategoriesStore";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { categoryInitValues, categoryValidationSchema } from "../forms/category.data";
-import { CustomAlerts } from "../../../shared/components";
+import Swal from "sweetalert2";
 
 export const EditCategoryPage = () => {
   let { id } = useParams();
+  const navigate = useNavigate();
   const selectedCategory = useCategoriesStore((state) => state.selectedCategory);
   const getCategory = useCategoriesStore((state) => state.getCategory);
   const editCategory = useCategoriesStore((state) => state.editCategory);
-  const [alertData, setAlertData] = useState({ message: "", type: "", show: false });
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
@@ -36,16 +36,20 @@ export const EditCategoryPage = () => {
     onSubmit: (formValues) => {
       try {
         editCategory(id, formValues); // editar
-        setAlertData({
-          message: "Categoría actualizada correctamente.",
-          type: "success",
-          show: true,
+        Swal.fire({
+          title: "¡Éxito!",
+          text: "Categoría actualizada correctamente",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate("/administration/categories-list");
         });
       } catch (error) {
-        setAlertData({
-          message: "Hubo un error al actualizar la categoría.",
-          type: "error",
-          show: true,
+        Swal.fire({
+          title: "Error",
+          text: "Ocurrió un problema al actualizar la categoría. Intenta nuevamente",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
     },
@@ -55,15 +59,6 @@ export const EditCategoryPage = () => {
     <div className="container mx-auto px-6">
       <main className="flex-1 p-6">
         <h2 className="text-3xl text-white font-bold mb-6">Editar Categoría</h2>
-
-        {/* Mostrar el alert si está habilitado */}
-        {alertData.show && (
-          <CustomAlerts
-            message={alertData.message}
-            type={alertData.type}
-            onClose={() => setAlertData((prev) => ({ ...prev, show: false }))}
-          />
-        )}
 
         <form
           onSubmit={formik.handleSubmit}
@@ -104,7 +99,7 @@ export const EditCategoryPage = () => {
             ></textarea>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

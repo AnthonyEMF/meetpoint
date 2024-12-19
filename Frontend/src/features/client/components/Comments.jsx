@@ -6,8 +6,10 @@ import { PiWarningCircleBold } from "react-icons/pi";
 import { ProtectedComponent } from "../../../shared/components";
 import { rolesListConstant } from "../../../shared/constants";
 import { useCommentsStore } from "../store/useCommentsStore";
+import Swal from "sweetalert2";
 
 export const Comments = ({ event, handleCommentsChange }) => {
+  // Funciones para comentarios y autenticación
   const { createComment, editComment, deleteComment, isSubmitting, error } = useCommentsStore();
   const [newComment, setNewComment] = useState("");
   const [replyCommentId, setReplyCommentId] = useState(null);
@@ -15,10 +17,8 @@ export const Comments = ({ event, handleCommentsChange }) => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedContent, setEditedContent] = useState("");
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
-  // Obtener id del usuario en sesión
   const getUserId = useAuthStore((state) => state.getUserId);
-  const loggedUserId = getUserId();
+  const loggedUserId = getUserId(); // id del usuario en sesión
 
   // Crear un nuevo comentario o respuesta
   const handleCreateComment = async (parentId = null) => {
@@ -57,8 +57,20 @@ export const Comments = ({ event, handleCommentsChange }) => {
 
   // Eliminar un comentario
   const handleDeleteComment = async (commentId) => {
-    await deleteComment(commentId);
-    if (handleCommentsChange) handleCommentsChange();
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará el comentario de forma permanente",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteComment(commentId);
+        if (handleCommentsChange) handleCommentsChange();
+      }
+    });
   };
 
   // Renderizar lista de comentarios
@@ -73,7 +85,11 @@ export const Comments = ({ event, handleCommentsChange }) => {
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-3">
                 <Link
-                  to={comment.userId === loggedUserId ? "/user" : `/user/view/${comment.userId}`}
+                  to={
+                    comment.userId === loggedUserId
+                      ? "/user"
+                      : `/user/view/${comment.userId}`
+                  }
                   className="flex items-center gap-2"
                 >
                   <img
@@ -84,8 +100,8 @@ export const Comments = ({ event, handleCommentsChange }) => {
                   <p className="font-semibold text-gray-900">
                     {comment.userName}
                     {/* {user?.data?.membership && ( // Mostrar insignia de usuario premium
-                      <MdOutlineWorkspacePremium size={27} className="text-yellow-500 ml-1"/>
-                    )} */}
+                        <MdOutlineWorkspacePremium size={27} className="text-yellow-500 ml-1"/>
+                      )} */}
                   </p>
                 </Link>
 
@@ -154,53 +170,52 @@ export const Comments = ({ event, handleCommentsChange }) => {
 
               {/* Editar comentario para administradores */}
               <ProtectedComponent requiredRoles={[rolesListConstant.ADMIN]}>
-              {comment.userId != loggedUserId && (
-                <div className="flex space-x-2">
-                  {editingCommentId === comment.id ? (
-                    <div className="flex flex-col my-8 ml-4">
-                      <button
-                        className="mt-2 px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
-                        onClick={() => handleEditComment(comment.id)}
-                        disabled={isSubmitting}
-                      >
-                        Guardar
-                      </button>
-                      <button
-                        className="mt-2 px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700"
-                        onClick={() => {
-                          setEditingCommentId(null);
-                          setEditedContent("");
-                        }}
-                        disabled={isSubmitting}
-                      >
-                        Cancelar
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <button
-                        className="p-2 text-xl bg-green-500 text-white rounded-full hover:bg-green-700"
-                        onClick={() => {
-                          setEditingCommentId(comment.id);
-                          setEditedContent(comment.content);
-                        }}
-                        disabled={isSubmitting}
-                      >
-                        <RiEdit2Fill />
-                      </button>
-                      <button
-                        className="p-2 text-xl bg-red-500 text-white rounded-full hover:bg-red-700"
-                        onClick={() => handleDeleteComment(comment.id)}
-                        disabled={isSubmitting}
-                      >
-                        <RiDeleteBin5Fill />
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
+                {comment.userId != loggedUserId && (
+                  <div className="flex space-x-2">
+                    {editingCommentId === comment.id ? (
+                      <div className="flex flex-col my-8 ml-4">
+                        <button
+                          className="mt-2 px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
+                          onClick={() => handleEditComment(comment.id)}
+                          disabled={isSubmitting}
+                        >
+                          Guardar
+                        </button>
+                        <button
+                          className="mt-2 px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700"
+                          onClick={() => {
+                            setEditingCommentId(null);
+                            setEditedContent("");
+                          }}
+                          disabled={isSubmitting}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <button
+                          className="p-2 text-xl bg-green-500 text-white rounded-full hover:bg-green-700"
+                          onClick={() => {
+                            setEditingCommentId(comment.id);
+                            setEditedContent(comment.content);
+                          }}
+                          disabled={isSubmitting}
+                        >
+                          <RiEdit2Fill />
+                        </button>
+                        <button
+                          className="p-2 text-xl bg-red-500 text-white rounded-full hover:bg-red-700"
+                          onClick={() => handleDeleteComment(comment.id)}
+                          disabled={isSubmitting}
+                        >
+                          <RiDeleteBin5Fill />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
               </ProtectedComponent>
-              
             </div>
             {comment.parentId === null && (
               <button

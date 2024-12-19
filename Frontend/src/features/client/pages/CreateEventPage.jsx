@@ -1,22 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCategories } from "../hooks/useCategories";
-import { CustomAlerts, Loading } from "../../../shared/components";
+import { Loading } from "../../../shared/components";
 import { useEventsStore } from "../store/useEventsStore";
 import { useFormik } from "formik";
 import { eventInitValues, eventValidationSchema } from "../forms/event.data";
+import { useCategoriesStore } from "../../admin/store/useCategoriesStore";
+import Swal from "sweetalert2";
 
 export const CreateEventPage = () => {
-  const [fetching, setFetching] = useState(true);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   // Funciones para eventos y categorías
   const { createEvent, isSubmitting, error } = useEventsStore();
-  const { categories, loadCategories, isLoading } = useCategories();
-
-  // Estado del alert
-  const [alertData, setAlertData] = useState({ message: "", type: "", show: false, });
+  const { categories, loadCategories, isLoading } = useCategoriesStore();
 
   // Cargar categorías
   useEffect(() => {
@@ -36,7 +34,14 @@ export const CreateEventPage = () => {
 
       // Crear el nuevo evento
       const newEvent = await createEvent(formValues);
-      navigate(`/main/event/${newEvent.data.id}`);
+      Swal.fire({
+        title: "¡Éxito!",
+        text: "Evento creado correctamente",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate(`/main/event/${newEvent.data.id}`);
+      });
 
       validateAuthentication();
       setLoading(false);
@@ -187,15 +192,6 @@ export const CreateEventPage = () => {
             </div>
           )}
         </form>
-
-        {/* Mostrar el alert si está habilitado */}
-        {alertData.show && (
-          <CustomAlerts
-            message={alertData.message}
-            type={alertData.type}
-            onClose={() => setAlertData((prev) => ({ ...prev, show: false }))}
-          />
-        )}
       </main>
     </div>
   );

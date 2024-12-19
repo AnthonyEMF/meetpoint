@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { CustomAlerts } from "../../../shared/components";
 import { useUsersStore } from "../../admin/store/useUsersStore";
 import { useFormik } from "formik";
 import { userInitValues, userValidationSchema } from "../../admin/forms/user.data";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const EditUserPage = () => {
   let { id } = useParams();
+  const navigate = useNavigate();
+  const [fetching, setFetching] = useState(true);
+
+  // Funciones de usuarios
   const selectedUser = useUsersStore((state) => state.selectedUser);
   const getUser = useUsersStore((state) => state.getUser);
   const editUser = useUsersStore((state) => state.editUser);
-  const [fetching, setFetching] = useState(true);
-  const [alertData, setAlertData] = useState({ message: "", type: "", show: false });
 
   useEffect(() => {
     if (fetching && id) {
@@ -40,16 +42,21 @@ export const EditUserPage = () => {
       try {
         formValues.role === "USER";
         editUser(id, formValues);
-        setAlertData({
-          message: "Perfil actualizado correctamente.",
-          type: "success",
-          show: true,
+        editUser(id, formValues);
+        Swal.fire({
+          title: "¡Éxito!",
+          text: "Perfil actualizado correctamente",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate(`/user`);
         });
       } catch (error) {
-        setAlertData({
-          message: "Hubo un error al actualizar el perfil.",
-          type: "error",
-          show: true,
+        Swal.fire({
+          title: "Error",
+          text: "Ocurrió un problema al actualizar el perfil. Intenta nuevamente",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
     },
@@ -169,6 +176,29 @@ export const EditUserPage = () => {
             <div className="text-red-500 text-sm mb-2">{formik.errors.password}</div>
           )}
 
+          <div className="mb-2">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Confirmar Contraseña
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirmar Contraseña"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <div className="text-red-500 text-sm mb-2">
+              {formik.errors.confirmPassword}
+            </div>
+          )}
+
           <div className="flex items-center justify-center">
             <button
               type="submit"
@@ -178,14 +208,6 @@ export const EditUserPage = () => {
             </button>
           </div>
         </form>
-        {/* Mostrar el alert si está habilitado */}
-        {alertData.show && (
-          <CustomAlerts
-            message={alertData.message}
-            type={alertData.type}
-            onClose={() => setAlertData((prev) => ({ ...prev, show: false }))}
-          />
-        )}
       </main>
     </div>
   );

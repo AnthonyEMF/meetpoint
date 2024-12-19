@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useCategories } from "../hooks/useCategories";
-import { CustomAlerts } from "../../../shared/components";
 import { useEventsStore } from "../store/useEventsStore";
+import Swal from "sweetalert2";
+import { useCategoriesStore } from "../../admin/store/useCategoriesStore";
 
 export const EditEventPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [fetching, setFetching] = useState(true);
-  const { categories, loadCategories, isLoading } = useCategories();
+
+  // Funciones de eventos y categorías
+  const { categories, loadCategories, isLoading } = useCategoriesStore();
   const { event, loadEventById, editEvent, isSubmitting, error } = useEventsStore();
   const [formData, setFormData] = useState({
     title: "",
@@ -17,9 +19,6 @@ export const EditEventPage = () => {
     ubication: "",
     date: "",
   });
-
-  // Estado del alert
-  const [alertData, setAlertData] = useState({ message: "", type: "", show: false });
 
   // Cargar categorías
   useEffect(() => {
@@ -83,16 +82,15 @@ export const EditEventPage = () => {
       });
 
       // Mostrar alert de éxito
-      setAlertData({
-        message: "Evento editado correctamente.",
-        type: "success",
-        show: true,
+      Swal.fire({
+        title: "¡Éxito!",
+        text: "Evento actualizado correctamente",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate(`/main/event/${id}`);
       });
 
-      // Redirigir después de 2 segundos
-      setTimeout(() => {
-        navigate(`/main/event/${id}`);
-      }, 2000);
     } catch (error) {
       setAlertData({
         message: "Hubo un error al editar el evento.",
@@ -212,14 +210,7 @@ export const EditEventPage = () => {
             </div>
           )}
         </form>
-        {/* Mostrar el alert si está habilitado */}
-        {alertData.show && (
-          <CustomAlerts
-            message={alertData.message}
-            type={alertData.type}
-            onClose={() => setAlertData((prev) => ({ ...prev, show: false }))}
-          />
-        )}
+
       </main>
     </div>
   );

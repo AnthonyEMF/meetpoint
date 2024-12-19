@@ -1,7 +1,9 @@
 import { create } from "zustand";
-import { createCategoryApi, deleteCategoryApi, editCategoryApi, getCategoryById } from "../../../shared/actions/categories/categories.action";
+import { createCategoryApi, deleteCategoryApi, editCategoryApi, getCategoriesList, getCategoryById } from "../../../shared/actions/categories/categories.action";
 
 export const useCategoriesStore = create((set, get) => ({
+  categories: {},
+  isLoading: false,
   selectedCategory: {},
   categoriesData: {
     hasNextPage: false,
@@ -11,6 +13,19 @@ export const useCategoriesStore = create((set, get) => ({
     totalItems: 0,
     totalPages: 0,
     items: []
+  },
+
+  // Cargar todas las categorías
+  loadCategories: async (searchTerm, page) => {
+    set({ isLoading: true });
+    try { 
+      const result = await getCategoriesList(searchTerm, page); 
+      set({ categories: result }); 
+    } catch (error) { 
+      console.error("Error al cargar las categorías:", error); 
+    } finally { 
+      set({ isLoading: false }); 
+    } 
   },
 
   // Cargar categoría por id
