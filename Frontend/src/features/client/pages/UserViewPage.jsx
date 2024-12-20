@@ -10,6 +10,8 @@ import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { useReportsStore } from "../store/useReportsStore";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import { useFormik } from "formik";
+import { reportInitValues, reportValidationSchema } from "../forms/report.data";
 import Swal from "sweetalert2";
 
 export const UserViewPage = () => {
@@ -21,7 +23,6 @@ export const UserViewPage = () => {
   const { user, loadUserById } = useUsersStore();
   const { deleteUser } = useUsersStore();
   const { createReport, isSubmitting } = useReportsStore();
-  const [reason, setReason] = useState("");
   const getUserId = useAuthStore((state) => state.getUserId);
   const loggedUserId = getUserId(); // id del usuario en sesión
 
@@ -31,6 +32,11 @@ export const UserViewPage = () => {
       setFetching(false);
     }
   }, [fetching, loadUserById, loggedUserId]);
+
+  // Verificar si el usuario en sesión ya ha reportado al usuario
+  const hasReported = user?.data?.reports?.some(
+    (report) => report.reporterId === loggedUserId
+  );
 
   // Eliminar usuario
   const handleDeleteUser = async () => {
@@ -72,42 +78,29 @@ export const UserViewPage = () => {
     });
   };
 
-  // Verificar si el usuario en sesión ya ha reportado al usuario
-  const hasReported = user?.data?.reports?.some(
-    (report) => report.reporterId === loggedUserId
-  );
+  // Manejo del formulario con Formik
+  const formik = useFormik({
+    initialValues: reportInitValues,
+    validationSchema: reportValidationSchema,
+    validateOnChange: true,
+    onSubmit: async (formValues) => {
+      // Asignar id del usuario que esta siendo reportado
+      formValues.organizerId = id;
 
-  const handleReportChange = (e) => {
-    setReason(e.target.value);
-  };
-
-  // Crear un nuevo reporte
-  const handleCreateReport = async () => {
-    if (reason.length < 10) {
+      // Crear el nuevo reporte
+      await createReport(formValues);
       Swal.fire({
-        title: "Error",
-        text: "El motivo del reporte debe tener al menos 10 caracteres",
-        icon: "error",
+        title: "Usuario reportado correctamente",
+        text: "Los administradores se encargarán de atender tu reporte",
+        icon: "success",
         confirmButtonText: "OK",
+      }).then(() => {
+        loadUserById(id);
       });
-      return;
-    }
 
-    const reportData = {
-      organizerId: id,
-      reason: reason,
-    };
-
-    await createReport(reportData);
-    Swal.fire({
-      title: "Usuario reportado correctamente",
-      text: "Pronto tomaremos acciones al respecto",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then(() => {
-      loadUserById(id);
-    });
-  };
+      validateAuthentication();
+    },
+  });
 
   return (
     <div className="container mx-auto p-6">
@@ -237,36 +230,50 @@ export const UserViewPage = () => {
           </div>
         </div>
       </div>
+
       {/* Sección para reportar usuario */}
       {loggedUserId !== id && ( // Validar que no se pueda reportar a si mismo
         <div>
           {hasReported ? (
             <h2 className="flex items-center justify-center text-xl py-2 mt-6 font-semibold rounded-lg bg-red-500 text-center text-white">
               <IoMdInformationCircleOutline size={23} className="mr-1" />
-              El usuario ha sido reportado, pronto tomaremos acciones al respecto
+              El usuario ha sido reportado, pronto tomaremos acciones al
+              respecto
             </h2>
           ) : (
-            <div>
+            <form onSubmit={formik.handleSubmit}>
               <h2 className="text-2xl text-white mt-4 font-semibold">
                 Reportar usuario
               </h2>
               <div>
+                {/* Motivo del reporte */}
                 <textarea
                   className="w-full p-4 border rounded-lg mt-4 outline-none"
                   placeholder="Escribe el motivo del reporte..."
                   rows="4"
-                  value={reason}
-                  onChange={handleReportChange}
+                  id="reason"
+                  name="reason"
+                  value={formik.values.reason}
+                  onChange={formik.handleChange}
                 />
+                {/* Botón de reportar */}
+                <div className="flex items-center">
                 <button
                   className="w-1/5 my-2 py-2 px-4 font-semibold bg-red-500 text-white rounded-lg hover:bg-red-700"
-                  onClick={handleCreateReport}
+                  type="submit"
                   disabled={isSubmitting}
                 >
                   Reportar
                 </button>
+                {formik.touched.reason && formik.errors.reason && (
+                  <div className="flex items-center justify-center bg-red-500 px-2 py-1 ml-2 rounded-full text-white font-semibold">
+                    <IoMdInformationCircleOutline size={18} className="mr-1" />
+                    {formik.errors.reason}
+                  </div>
+                )}
+                </div>
               </div>
-            </div>
+            </form>
           )}
         </div>
       )}

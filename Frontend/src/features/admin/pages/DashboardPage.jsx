@@ -8,6 +8,7 @@ import { FaMapLocationDot } from "react-icons/fa6";
 import { MdAssignment } from "react-icons/md";
 import { IoPeopleSharp } from "react-icons/io5";
 import { useReportsStore } from "../../client/store/useReportsStore";
+import { RiAdminFill } from "react-icons/ri";
 
 export const DashboardPage = () => {
   const loadData = useDashboardStore((state) => state.loadData);
@@ -84,7 +85,10 @@ export const DashboardPage = () => {
     <div className="min-h-screen">
       <header>
         <div className="container mx-auto mt-4 px-4 py-4 text-center">
-          <h1 className="text-4xl font-bold text-white">Administración</h1>
+          <h1 className="flex items-center justify-center text-4xl font-bold text-white">
+            Administración
+            <RiAdminFill size={35} className="ml-1" />
+          </h1>
         </div>
       </header>
 
@@ -164,7 +168,7 @@ export const DashboardPage = () => {
         </div>
       </nav>
 
-      {/* Content */}
+      {/* Contenido */}
       <main className="container mx-auto px-4 py-2 grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Usuarios Recientes */}
         <section className="bg-white shadow rounded p-4">
@@ -175,7 +179,6 @@ export const DashboardPage = () => {
             <UserDashboardRowItem users={users} />
           </ul>
         </section>
-
         {/* Eventos Recientes */}
         <section className="bg-white shadow rounded p-4">
           <h2 className="text-xl font-bold text-gray-700 mb-4 text-center">
@@ -185,7 +188,6 @@ export const DashboardPage = () => {
             <EventDashboardRowItem events={events} />
           </ul>
         </section>
-
         {/* Categorías Recientes */}
         <section className="bg-white shadow rounded p-4">
           <h2 className="text-xl font-bold text-gray-700 mb-4 text-center">
@@ -198,12 +200,13 @@ export const DashboardPage = () => {
       </main>
 
       <div className="container mx-auto px-4 py-2 grid grid-cols-1 md:grid-cols-1 gap-6 mb-6 mt-2">
-        {/* Reportes Recientes */}
+        {/* Reportes */}
         <section className="bg-white shadow rounded p-4">
           <h2 className="text-lg font-bold text-gray-700 mb-3">
             <div className="flex justify-center items-center">
               <span className="text-2xl mb-2">Reportes de usuarios</span>
             </div>
+            {/* Barra de búsqueda */}
             <form onSubmit={handleSubmit} className="flex items-center">
               <input
                 type="text"
