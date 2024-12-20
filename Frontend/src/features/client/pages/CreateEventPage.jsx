@@ -57,11 +57,9 @@ export const CreateEventPage = () => {
         <h2 className="text-3xl text-white font-bold mb-6">
           Crear Nuevo Evento
         </h2>
-
-        <form
-          onSubmit={formik.handleSubmit}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        >
+        {/* Formulario */}
+        <form onSubmit={formik.handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          {/* Titulo */}
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -82,7 +80,7 @@ export const CreateEventPage = () => {
           {formik.touched.title && formik.errors.title && (
             <div className="text-red-500 text-sm mb-3">{formik.errors.title}</div>
           )}
-
+          {/* Categoría */}
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -113,7 +111,7 @@ export const CreateEventPage = () => {
           {formik.touched.categoryId && formik.errors.categoryId && (
             <div className="text-red-500 text-sm mb-3">{formik.errors.categoryId}</div>
           )}
-
+          {/* Descripción */}
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -134,7 +132,7 @@ export const CreateEventPage = () => {
           {formik.touched.description && formik.errors.description && (
             <div className="text-red-500 text-sm mb-3">{formik.errors.description}</div>
           )}
-
+          {/* Ubicación */}
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -155,7 +153,7 @@ export const CreateEventPage = () => {
           {formik.touched.ubication && formik.errors.ubication && (
             <div className="text-red-500 text-sm mb-3">{formik.errors.ubication}</div>
           )}
-
+          {/* Fecha */}
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -175,7 +173,7 @@ export const CreateEventPage = () => {
           {formik.touched.date && formik.errors.date && (
             <div className="text-red-500 text-sm mb-3">{formik.errors.date}</div>
           )}
-
+          {/* Botón de submit */}
           <div className="flex items-center justify-center">
             <button
               type="submit"
@@ -185,7 +183,7 @@ export const CreateEventPage = () => {
               {isSubmitting ? "Creando..." : "Crear Evento"}
             </button>
           </div>
-
+          {/* Mensaje de error */}
           {error && (
             <div className="text-red-500 text-center mt-4">
               Ocurrió un error al crear el evento. Intenta nuevamente.
