@@ -54,13 +54,13 @@ export const ReportDashboardRowItem = ({ report, handleReportsChange }) => {
             <span>¿Está seguro de que desea eliminar este reporte?</span>
             <div className="flex space-x-4">
               <button
-                className="text-green-600 hover:text-green-800 font-bold"
+                className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-700 font-bold"
                 onClick={confirmDeleteReport}
               >
                 Confirmar
               </button>
               <button
-                className="text-yellow-600 hover:text-yellow-800 font-bold"
+                className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-700 font-bold"
                 onClick={() => setShowConfirmAlert(false)}
               >
                 Cancelar

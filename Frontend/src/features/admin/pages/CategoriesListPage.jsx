@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Pagination } from "../../../shared/components";
-import { useCategories } from "../../client/hooks";
 import { CategoriesRowItem } from "../components";
 import { Link } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
+import { useCategoriesStore } from "../store/useCategoriesStore";
 
 export const CategoriesListPage = () => {
-  const { categories, loadCategories, isLoading } = useCategories();
+  const { categories, loadCategories, isLoading } = useCategoriesStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [fetching, setFetching] = useState(true);

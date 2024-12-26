@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { useCategories } from "../hooks/useCategories";
 import { useEffect, useState } from "react";
-import { useUsers } from "../hooks/useUsers";
 import { useAuthStore } from "../../security/store/useAuthStore";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FiPlusCircle } from "react-icons/fi";
@@ -9,13 +7,15 @@ import { FaPeoplePulling } from "react-icons/fa6";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { StarRating } from "../../../shared/components";
 import { IoStatsChart } from "react-icons/io5";
+import { useCategoriesStore } from "../../admin/store/useCategoriesStore";
+import { useUsersStore } from "../../admin/store/useUsersStore";
 
 export const Sidebar = ({ onCategorySelect }) => {
   const [fetching, setFetching] = useState(true);
 
   // Funciones de categorías y usuarios
-  const { user, loadUserById } = useUsers();
-  const { categories, loadCategories, isLoading } = useCategories();
+  const { user, loadUserById } = useUsersStore();
+  const { categories, loadCategories, isLoading } = useCategoriesStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const logout = useAuthStore((state) => state.logout);
 

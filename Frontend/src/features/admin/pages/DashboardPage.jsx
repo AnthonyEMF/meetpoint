@@ -11,10 +11,11 @@ import { useReportsStore } from "../../client/store/useReportsStore";
 import { RiAdminFill } from "react-icons/ri";
 
 export const DashboardPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const loadData = useDashboardStore((state) => state.loadData);
   const dashboardData = useDashboardStore((state) => state.dashboardData);
-  const [isLoading, setIsLoading] = useState(true);
-  // reportes con paginación
+
+  // Reportes con paginación
   const { reports, loadReports } = useReportsStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");

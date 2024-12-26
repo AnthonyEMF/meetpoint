@@ -15,7 +15,7 @@ export const EventDashboardRowItem = ({ events = [] }) => {
               <p className="font-medium max-w-[200px] text-ellipsis overflow-hidden whitespace-nowrap text-gray-700">
                 {event.title}
               </p>
-              <p className="text-sm max-w-[240px] text-ellipsis text-gray-500">{event.description}</p>
+              <p className="text-sm max-w-[220px] text-ellipsis text-gray-500">{event.description}</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center text-gray-500 text-sm">

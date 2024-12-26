@@ -70,18 +70,18 @@ export const CategoriesRowItem = ({ category, handleCategoriesChange }) => {
       )}
       {showConfirmAlert && (
         <tr>
-          <td colSpan="3" className="bg-yellow-100 text-yellow-800 text-center px-4 py-2">
+          <td colSpan="3" className="bg-yellow-100 text-yellow-800 text-center px-6 py-2 pr-20">
             <div className="flex justify-between items-center">
               <span>¿Está seguro de que desea eliminar esta categoría?</span>
-              <div className="flex space-x-4">
+                <div className="flex space-x-2">
                 <button
-                  className="text-green-600 hover:text-green-800 font-bold"
+                  className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-700 font-bold"
                   onClick={confirmDeleteCategory}
                 >
                   Confirmar
                 </button>
                 <button
-                  className="text-yellow-600 hover:text-yellow-800 font-bold"
+                  className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-700 font-bold"
                   onClick={() => setShowConfirmAlert(false)}
                 >
                   Cancelar
