@@ -39,7 +39,7 @@ namespace MeetPoint.API.Services
 				.Include(e => e.Category)
 				.Include(e => e.Organizer).ThenInclude(o => o.Ratings)
 				.Include(e => e.Attendances).ThenInclude(a => a.User)
-				.Include(e => e.Comments).ThenInclude(c => c.User)
+				.Include(e => e.Comments).ThenInclude(c => c.User).ThenInclude(u => u.Membership)
 				.Where(e => e.PublicationDate <= DateTime.Now);
 
 			if (!string.IsNullOrEmpty(searchTerm))
@@ -84,7 +84,7 @@ namespace MeetPoint.API.Services
 				.Include(e => e.Category)
 				.Include(e => e.Organizer).ThenInclude(o => o.Ratings)
 				.Include(e => e.Attendances).ThenInclude(a => a.User)
-				.Include(e => e.Comments).ThenInclude(c => c.User)
+				.Include(e => e.Comments).ThenInclude(c => c.User).ThenInclude(u => u.Membership)
 				.FirstOrDefaultAsync(e => e.Id == id);
 
 			if (eventEntity is null)

@@ -7,6 +7,7 @@ import { ProtectedComponent } from "../../../shared/components";
 import { rolesListConstant } from "../../../shared/constants";
 import { useCommentsStore } from "../store/useCommentsStore";
 import Swal from "sweetalert2";
+import { MdOutlineWorkspacePremium } from "react-icons/md";
 
 export const Comments = ({ event, handleCommentsChange }) => {
   // Funciones para comentarios y autenticación
@@ -97,11 +98,11 @@ export const Comments = ({ event, handleCommentsChange }) => {
                     alt="Perfil"
                     className="w-7 h-7 rounded-full"
                   />
-                  <p className="font-semibold text-gray-900">
+                  <p className="flex font-semibold text-gray-900">
                     {comment.userName}
-                    {/* {user?.data?.membership && ( // Mostrar insignia de usuario premium
-                        <MdOutlineWorkspacePremium size={27} className="text-yellow-500 ml-1"/>
-                      )} */}
+                    {comment?.userMembership && ( // Mostrar insignia de usuario premium
+                      <MdOutlineWorkspacePremium size={25} className="text-yellow-500 ml-1"/>
+                    )}
                   </p>
                 </Link>
 

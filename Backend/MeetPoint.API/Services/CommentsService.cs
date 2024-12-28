@@ -36,7 +36,7 @@ namespace MeetPoint.API.Services
 			int startIndex = (page - 1) * PAGE_SIZE;
 
             var commentsEntityQuery = _context.Comments
-				.Include(c => c.User)
+				.Include(c => c.User).ThenInclude(u => u.Membership)
 				.Include(c => c.Event)
 				.Include(c => c.Replies)
 				.Where(c => c.PublicationDate <= DateTime.Now);
@@ -80,7 +80,7 @@ namespace MeetPoint.API.Services
         public async Task<ResponseDto<CommentDto>> GetCommentByIdAsync(Guid id)
         {
             var commentEntity = await _context.Comments
-                .Include(c => c.User)
+                .Include(c => c.User).ThenInclude(u => u.Membership)
                 .Include(c => c.Event)
 				.Include(c => c.Replies)
                 .FirstOrDefaultAsync(c => c.Id == id);

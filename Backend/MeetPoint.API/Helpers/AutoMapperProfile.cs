@@ -85,6 +85,7 @@ namespace MeetPoint.API.Helpers
 		{
 			CreateMap<CommentEntity, CommentDto>()
 				.ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+				.ForMember(dest => dest.UserMembership, opt => opt.MapFrom(src => src.User.Membership))
 				.ForMember(dest => dest.Replies, opt => opt.MapFrom(src => src.Replies))
 				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.Event.Title));
 			CreateMap<CommentCreateDto, CommentEntity>();

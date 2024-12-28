@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using MeetPoint.API.Dtos.Memberships;
 
 namespace MeetPoint.API.Dtos.Comments
 {
@@ -8,6 +9,7 @@ namespace MeetPoint.API.Dtos.Comments
 		public Guid Id { get; set; }
 		public string UserId { get; set; }
 		public string UserName { get; set; }
+		public MembershipDto UserMembership { get; set; }
 		public Guid EventId { get; set; }
 		public string EventTitle { get; set; }
 		public string Content { get; set; }
