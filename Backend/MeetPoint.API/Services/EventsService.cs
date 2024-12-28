@@ -38,7 +38,7 @@ namespace MeetPoint.API.Services
 			var eventsEntityQuery = _context.Events
 				.Include(e => e.Category)
 				.Include(e => e.Organizer).ThenInclude(o => o.Ratings)
-				.Include(e => e.Attendances).ThenInclude(a => a.User)
+				.Include(e => e.Attendances).ThenInclude(a => a.User).ThenInclude(u => u.Membership)
 				.Include(e => e.Comments).ThenInclude(c => c.User).ThenInclude(u => u.Membership)
 				.Where(e => e.PublicationDate <= DateTime.Now);
 
@@ -83,7 +83,7 @@ namespace MeetPoint.API.Services
 			var eventEntity = await _context.Events
 				.Include(e => e.Category)
 				.Include(e => e.Organizer).ThenInclude(o => o.Ratings)
-				.Include(e => e.Attendances).ThenInclude(a => a.User)
+				.Include(e => e.Attendances).ThenInclude(a => a.User).ThenInclude(u => u.Membership)
 				.Include(e => e.Comments).ThenInclude(c => c.User).ThenInclude(u => u.Membership)
 				.FirstOrDefaultAsync(e => e.Id == id);
 

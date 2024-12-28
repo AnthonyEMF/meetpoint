@@ -76,6 +76,7 @@ namespace MeetPoint.API.Helpers
 		{
 			CreateMap<AttendanceEntity, AttendanceDto>()
 				.ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+				.ForMember(dest => dest.UserMembership, opt => opt.MapFrom(src => src.User.Membership))
 				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.Event.Title));
 			CreateMap<AttendanceCreateDto, AttendanceEntity>();
 			CreateMap<AttendanceEditDto, AttendanceEntity>();

@@ -41,8 +41,8 @@ namespace MeetPoint.API.Services
 			int startIndex = (page - 1) * PAGE_SIZE;
 
             var attendancesEntityQuery = _context.Attendances
-                .Include(a => a.User)
-                .Include(a => a.Event)
+                .Include(a => a.User).ThenInclude(u => u.Membership)
+				.Include(a => a.Event)
 				.Where(a => a.CreatedDate <= DateTime.Now);
 
 			if (!string.IsNullOrEmpty(searchTerm))
@@ -84,8 +84,8 @@ namespace MeetPoint.API.Services
         public async Task<ResponseDto<AttendanceDto>> GetAttendanceByIdAsync(Guid id)
         {
             var attendanceEntity = await _context.Attendances
-                .Include(a => a.User)
-                .Include(a => a.Event)
+                .Include(a => a.User).ThenInclude(u => u.Membership)
+				.Include(a => a.Event)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (attendanceEntity is null)

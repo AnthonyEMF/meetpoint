@@ -11,6 +11,7 @@ import { useUsersStore } from "../../admin/store/useUsersStore";
 import { IoMdHappy } from "react-icons/io";
 import StarRatingInput from "../../../shared/components/StarRatingInput";
 import Swal from "sweetalert2";
+import { MdOutlineWorkspacePremium } from "react-icons/md";
 
 export const Attendances = ({ event, handleAttendancesChange }) => {
   const [fetching, setFetching] = useState(true);
@@ -171,11 +172,16 @@ export const Attendances = ({ event, handleAttendancesChange }) => {
                         alt="Perfil"
                         className="w-8 h-8 mt-3 mr-2 rounded-full mx-auto mb-3"
                       />
-                      <span>{attendance.userName}</span>
+                      <span className="flex">
+                        {attendance.userName}
+                        {attendance.userMembership && ( // Mostrar insignia de usuario premium
+                          <MdOutlineWorkspacePremium size={25} className="text-yellow-500 ml-1"/>
+                        )}
+                      </span>
                     </Link>
                     {/* Estado de la asistencia */}
                     <span
-                      className={`px-4 py-2 rounded-full text-white ${
+                      className={`px-4 py-2 rounded-full text-white text-sm ${
                         attendance.state === "CONFIRMADO"
                           ? "bg-green-500"
                           : attendance.state === "PENDIENTE"
