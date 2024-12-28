@@ -13,6 +13,8 @@ namespace MeetPoint.API.Dtos.Events
 		public string CategoryName { get; set; }
 		public string OrganizerId { get; set; }
 		public string OrganizerName { get; set; }
+        public decimal OrganizerRating { get; set; }
+		public int OrganizerRatingsCount { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public string Ubication { get; set; }

@@ -78,7 +78,7 @@ export const UserViewPage = () => {
     });
   };
 
-  // Manejo del formulario con Formik
+  // Manejo del formulario con Formik (Reportes)
   const formik = useFormik({
     initialValues: reportInitValues,
     validationSchema: reportValidationSchema,

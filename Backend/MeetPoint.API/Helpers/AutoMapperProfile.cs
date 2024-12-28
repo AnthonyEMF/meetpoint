@@ -50,6 +50,8 @@ namespace MeetPoint.API.Helpers
 			CreateMap<EventEntity, EventDto>()
 				.ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
 				.ForMember(dest => dest.OrganizerName, opt => opt.MapFrom(src => src.Organizer.FirstName + " " + src.Organizer.LastName))
+				.ForMember(dest => dest.OrganizerRating, opt => opt.MapFrom(src => src.Organizer.AverageRating))
+				.ForMember(dest => dest.OrganizerRatingsCount, opt => opt.MapFrom(src => src.Organizer.RatingsCount))
 				.ForMember(dest => dest.Attendances, opt => opt.MapFrom(src => src.Attendances))
 				.ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments));
 			CreateMap<EventCreateDto, EventEntity>();

@@ -3,13 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Attendances, Comments, EventPageSkeleton } from "../components";
 import { useAuthStore } from "../../security/store";
-import { ProtectedComponent } from "../../../shared/components";
+import { ProtectedComponent, StarRating } from "../../../shared/components";
 import { FaRegCalendarXmark } from "react-icons/fa6";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { rolesListConstant } from "../../../shared/constants";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
 import { useEventsStore } from "../store/useEventsStore";
 import Swal from "sweetalert2";
+import { IoStatsChart } from "react-icons/io5";
 
 export const EventPage = () => {
   const { id } = useParams();
@@ -22,6 +23,7 @@ export const EventPage = () => {
   const getUserId = useAuthStore((state) => state.getUserId);
   const loggedUserId = getUserId(); // id del usuario en sesión
 
+  // Cargar info del evento
   useEffect(() => {
     if (fetching) {
       if (id) {
@@ -31,17 +33,10 @@ export const EventPage = () => {
     }
   }, [fetching]);
   
-  if (!event || !event.data) {
-    return <div>Evento no encontrado.</div>;
-  }
-  
+  if (!event || !event.data) return <div>Evento no encontrado...</div>;
+
   // Verificar si el usuario en sesión es el organizador del evento
   const isOrganizer = loggedUserId === event.data.organizerId;
-
-  // Editar el evento
-  const handleEditEvent = () => {
-    navigate(`/main/event/edit/${id}`);
-  };
 
   // Eliminación del evento
   const handleDeleteEvent = async () => {
@@ -56,7 +51,8 @@ export const EventPage = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteEvent(event.data.id); // Llamada al servicio de eliminación
+          // Llamada al servicio de eliminación
+          await deleteEvent(event.data.id);
           Swal.fire({
             title: "¡Eliminado!",
             text: "El evento ha sido eliminado correctamente",
@@ -83,17 +79,18 @@ export const EventPage = () => {
     });
   };
 
+  // Cambios en las asistencias
   const handleAttendancesChange = async () => {
     await loadEventById(id);
   };
 
+  // Cambios en los comentarios
   const handleCommentsChange = async () => {
     await loadEventById(id);
   };
 
   return (
     <div className="container mx-auto p-6">
-
       {/* Información del Evento */}
       {isLoading ? (
         <EventPageSkeleton />
@@ -133,30 +130,30 @@ export const EventPage = () => {
           {/* Contenedor Derecho */}
           <div className="w-full md:w-30 md:pl-4 flex flex-col items-end">
             {isAuthenticated && (
-              <p className="mb-1 self-end">
+              <div className="self-end">
                 Organizado por{" "}
                 <Link to={event.data.organizerId === loggedUserId ? "/user" : `/user/view/${event.data.organizerId}`}>
                   <span className="font-bold">{event.data.organizerName}</span>
                 </Link>
                 {/* Rating de estrellas */}
-                {/* <div className="flex justify-center items-center">
-                  <StarRating rating={user?.data?.averageRating || 0} />
-                  <IoStatsChart size={14} className="text-gray-700 mt-1 mx-1" />
-                  <span className="text-base text-gray-700">({user?.data?.ratingsCount})</span>
-                </div> */}
-              </p>
+                <div className="flex justify-center items-center">
+                  <StarRating rating={event?.data?.organizerRating || 0} />
+                  <IoStatsChart size={14} className="text-gray-700 mx-1" />
+                  <span className="text-base text-gray-700">({event?.data?.organizerRatingsCount || 0})</span>
+                </div>
+              </div>
             )}
 
             {/* Mostrar botones para el organizador */}
             {isOrganizer && (
               <div>
-                <button
+                <Link
+                  to={`/main/event/edit/${id}`}
                   className="flex items-center justify-center w-full my-2 mr-2 px-14 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
-                  onClick={handleEditEvent}
                 >
                   <RiEdit2Fill className="mr-2" size={18} />
                   Editar Evento
-                </button>
+                </Link>
                 <button
                   className="flex items-center justify-center w-full my-2 px-14 py-2 bg-red-600 text-white rounded hover:bg-red-500"
                   onClick={handleDeleteEvent}
@@ -166,18 +163,17 @@ export const EventPage = () => {
                 </button>
               </div>
             )}
-
             {/* Mostrar botones para el administrador */}
             <ProtectedComponent requiredRoles={[rolesListConstant.ADMIN]}>
               {!isOrganizer && (
                 <div>
-                  <button
+                  <Link
+                    to={`/main/event/edit/${id}`}
                     className="flex items-center justify-center w-full my-2 mr-2 px-14 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
-                    onClick={handleEditEvent}
                   >
                     <RiEdit2Fill className="mr-2" size={18} />
                     Editar Evento
-                  </button>
+                  </Link>
                   <button
                     className="flex items-center justify-center w-full my-2 px-14 py-2 bg-red-600 text-white rounded hover:bg-red-500"
                     onClick={handleDeleteEvent}
@@ -201,7 +197,6 @@ export const EventPage = () => {
 
       {/* Sección de Comentarios */}
       <Comments event={event} handleCommentsChange={handleCommentsChange} />
-
     </div>
   );
 };
