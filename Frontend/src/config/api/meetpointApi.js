@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAuthStore } from "../../features/security/store";
 
-const API_URL = "https://localhost:7280/api";
+const API_URL = "http://localhost:5048/api";
 
 // Buscar el token y retornarlo
 const getAuth = () => {

@@ -49,39 +49,27 @@ namespace MeetPoint.API.Database
 					var userAdmin = new UserEntity
 					{
 						Id = "2a373bd7-1829-4bb4-abb7-19da4257891d",
-						Email = "aemiranda@unah.hn",
-						UserName = "aemiranda@unah.hn",
-						FirstName = "Anthony",
-						LastName = "Miranda",
+						Email = "admin@me.com",
+						UserName = "admin@me.com",
+						FirstName = "Administrador",
+						LastName = "MeetPoint",
 						Location = "Santa Rosa de Copán"
-					};
-
-					var userAdmin2 = new UserEntity
-					{
-						Id = "b914d419-0dea-4117-a50f-4fc55b684901",
-						Email = "isaacvides@unah.hn",
-						UserName = "isaacvides@unah.hn",
-						FirstName = "Danilo",
-						LastName = "Vides",
-						Location = "Santa Rita, Copán"
 					};
 
 					var normalUser = new UserEntity
 					{
 						Id = "704540fe-2eaa-412f-a635-d41a4ec17404",
-						Email = "jperez@unah.hn",
-						UserName = "jperez@unah.hn",
-						FirstName = "Juan",
-						LastName = "Perez",
+						Email = "user@me.com",
+						UserName = "user@me.com",
+						FirstName = "Usuario",
+						LastName = "MeetPoint",
 						Location = "Gracias, Lempira"
 					};
 
 					await userManager.CreateAsync(userAdmin, "Temporal01*");
-					await userManager.CreateAsync(userAdmin2, "Temporal01*");
 					await userManager.CreateAsync(normalUser, "Temporal01*");
 
 					await userManager.AddToRoleAsync(userAdmin, RolesConstant.ADMIN);
-					await userManager.AddToRoleAsync(userAdmin2, RolesConstant.ADMIN);
 					await userManager.AddToRoleAsync(normalUser, RolesConstant.USER);
 				}
 			}
