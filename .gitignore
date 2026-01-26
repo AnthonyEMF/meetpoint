@@ -1,12 +1,20 @@
 # Backend configs
-appsettings.json
+Backend/MeetPoint.API/appsettings.json
+backend/MeetPoint.API/appsettings.json
 
 # Database migrations
-Migrations/
+Backend/MeetPoint.API/Migrations/
+backend/MeetPoint.API/Migrations/
 
 # Node packages
-node_modules/
-package-lock.json
+Frontend/node_modules/
+frontend/node_modules/
+Frontend/package-lock.json
+frontend/package-lock.json
+
+# ENV files
+Frontend/.env
+frontend/.env
 
 # User-specific files
 *.suo
