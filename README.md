@@ -1,8 +1,7 @@
-# MeetPoint: Red Social de Eventos
+# 🗺️ MeetPoint
+ Nuestro proyecto consiste en una red social de eventos que permite a los usuarios descubrir, organizar y participar en eventos sociales. Los usuarios pueden crear eventos, registrarse para asistir a estos e interactuar a través de comentarios. La plataforma clasifica los eventos por categorías, facilita la gestión de asistencias y ofrece un espacio para la interacción social en torno a eventos de interés común.
 
-### Nuestro proyecto consiste en una red social de eventos que permite a los usuarios descubrir, organizar y participar en eventos sociales. Los usuarios pueden crear eventos, registrarse para asistir a estos e interactuar a través de comentarios. La plataforma clasifica los eventos por categorías, facilita la gestión de asistencias y ofrece un espacio para la interacción social en torno a eventos de interés común.
-
-## Características de usuario
+## 👤 Características de Usuario
 
 - Crear, editar y eliminar eventos.
 
@@ -22,7 +21,7 @@
 
 - Sistema de autenticación y autorización.
 
-## Características de administrador
+## 🛡️ Características de Administrador
 
 - Dashboard de control con toda la información de la aplicación.
 
@@ -34,48 +33,103 @@
 
 - Sistema de autenticación y autorización.
 
-## Tecnologías Utilizadas
+## 💻 Tecnologías Utilizadas
 
-![C#](https://img.shields.io/badge/Language-C%23-blue)
-![ASP.NET Core](https://img.shields.io/badge/Framework-ASP.NET%20Core-blue)
-![JavaScript](https://img.shields.io/badge/Language-JavaScript-darkgreen)
-![React](https://img.shields.io/badge/Framework-React-darkgreen)
-![SQL Server](https://img.shields.io/badge/Database-SQL%20Server-orange)
+- ASP.NET Core 8.0
+- Node JS
+- React
+- Microsoft SQL Server
+- Docker
 
-## Instalación
+## 🛠️ Instalación
 
-1. Clona este repositorio:
+Primero clona este repositorio:
    ```bash
    git clone https://github.com/AnthonyEMF/meetpoint.git
    ```
+
+### ⚙️ Frontend:
+
+1. Accede a la carpeta Frontend:
+
+   ```bash
+   cd Frontend
+   ```
+
 2. Instala las dependencias:
 
    ```bash
    npm install
    ```
 
-3. Corre el proyecto:
+3. Ejecuta el proyecto:
 
    ```bash
    npm run dev
    ```
 
-4. Migración de la base de datos:
+### ⚙️ Backend:
+
+1. Accede a la carpeta MeetPoint.API:
 
    ```bash
-   add-migration Init
-   update-database
+   cd backend/MeetPoint.API
    ```
 
-## Estado del Proyecto
+2. Crea el archivo appsettings.json:
 
-Actualmente en desarrollo.  
-Mostrar insignias de membresía y rating de organizador en la página de evento.  
-Cambiar los hooks existentes a store con zustand e implementación de formik.  
-Validar que solo se permita el registro para personas mayores de edad.  
-Agregar más ventajas para la membresía de pago.
+   ```bash
+   mkdir appsettings.json
+   ```
 
-## Autores
+3. Pega lo siguiente en appsettings.json (Los puertos pueden variar según tu equipo):
 
-- Anthony Miranda - [@AnthonyEMF](https://github.com/AnthonyEMF)
-- Danilo Vides - [@IsaacV04](https://github.com/IsaacV04)
+   ```bash
+   {
+      "ConnectionStrings": {
+         "DefaultConnection": "Server=localhost,1433;Database=MeetPoint;User Id=sa;Password=YourStrong@Password123;Trusted_Connection=false;TrustServerCertificate=true;Encrypt=true;"
+      },
+      "AllowURLS": [
+         "http://localhost:5173"
+      ],
+      "PageSize": 8,
+      "JWT": {
+         "ValidAudience": "http://localhost:5173",
+         "ValidIssuer": "https://localhost:7191",
+         "Secret": "Your hiper mega secret",
+         "Expires": "120",
+         "RefreshTokenExpire": "240"
+      },
+      "Logging": {
+         "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+         }
+      }
+   }
+   ```
+
+4. Inicializa el contenedor de Docker que contiene la base de datos:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+5. Instala las herramientas de Entity Framework:
+
+   ```bash
+   dotnet tool install --global dotnet-ef
+   ```
+
+6. Creación y migración de la base de datos:
+
+   ```bash
+   dotnet ef migrations add InitDatabase
+   dotnet ef database update
+   ```
+
+7. Ejecutar el proyecto:
+
+   ```bash
+   dotnet run dev
+   ```
