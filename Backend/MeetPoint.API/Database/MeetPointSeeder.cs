@@ -17,7 +17,6 @@ namespace MeetPoint.API.Database
 			try
 			{
 				await LoadUsersAndRolesAsync(userManager, roleManager, loggerFactory);
-
 				await LoadCategoriesAsync(context, loggerFactory);
 				await LoadEventsAsync(context, loggerFactory);
 				await LoadAttendancesAsync(context, loggerFactory);
@@ -26,10 +25,11 @@ namespace MeetPoint.API.Database
 			catch (Exception ex)
 			{
 				var logger = loggerFactory.CreateLogger<MeetPointSeeder>();
-				logger.LogError(ex, "Error al inicializar la Data del API.");
+				logger.LogError(ex, "Error al inicializar la SeedData de la API.");
 			}
 		}
 
+		// Cargar usuarios de prueba y roles
 		public static async Task LoadUsersAndRolesAsync(
 			UserManager<UserEntity> userManager,
 			RoleManager<IdentityRole> roleManager,
@@ -80,6 +80,7 @@ namespace MeetPoint.API.Database
 			}
 		}
 
+		// Cargar categories.json
 		public static async Task LoadCategoriesAsync(MeetPointContext context, ILoggerFactory loggerFactory)
 		{
 			try
@@ -90,7 +91,7 @@ namespace MeetPoint.API.Database
 				
 				if (!await context.Categories.AnyAsync())
 				{
-					var user = await context.Users.FirstOrDefaultAsync();
+					var user = await context.Users.FirstOrDefaultAsync(u => u.Id == "2a373bd7-1829-4bb4-abb7-19da4257891d");
 
 					for (int i=0; i < categories.Count; i++)
 					{
@@ -100,7 +101,7 @@ namespace MeetPoint.API.Database
 						categories[i].UpdatedDate = DateTime.Now;
 					}
 					context.AddRange(categories);
-					await context.SaveChangesAsync();
+					await context.SaveChangesWithoutAuditAsync();
 				}
 			}
 			catch (Exception ex)
@@ -109,6 +110,8 @@ namespace MeetPoint.API.Database
 				logger.LogError(ex, "Error al ejecutar el Seed de Categorias.");
 			}
 		}
+		
+		// Cargar events.json
 		public static async Task LoadEventsAsync(MeetPointContext context, ILoggerFactory loggerFactory)
 		{
 			try
@@ -119,7 +122,7 @@ namespace MeetPoint.API.Database
 
 				if (!await context.Events.AnyAsync())
 				{
-					var user = await context.Users.FirstOrDefaultAsync();
+					var user = await context.Users.FirstOrDefaultAsync(u => u.Id == "2a373bd7-1829-4bb4-abb7-19da4257891d");
 
 					for (int i = 0; i < events.Count; i++)
 					{
@@ -129,7 +132,7 @@ namespace MeetPoint.API.Database
 						events[i].UpdatedDate = DateTime.Now;
 					}
 					context.AddRange(events);
-					await context.SaveChangesAsync();
+					await context.SaveChangesWithoutAuditAsync();
 				}
 			}
 			catch (Exception ex)
@@ -138,6 +141,8 @@ namespace MeetPoint.API.Database
 				logger.LogError(ex, "Error al ejecutar el Seed de Eventos.");
 			}
 		}
+		
+		// Cargar attendances.json
 		public static async Task LoadAttendancesAsync(MeetPointContext context, ILoggerFactory loggerFactory)
 		{
 			try
@@ -148,7 +153,7 @@ namespace MeetPoint.API.Database
 
 				if (!await context.Attendances.AnyAsync())
 				{
-					var user = await context.Users.FirstOrDefaultAsync();
+					var user = await context.Users.FirstOrDefaultAsync(u => u.Id == "2a373bd7-1829-4bb4-abb7-19da4257891d");
 
 					for (int i = 0; i < attendances.Count; i++)
 					{
@@ -158,7 +163,7 @@ namespace MeetPoint.API.Database
 						attendances[i].UpdatedDate = DateTime.Now;
 					}
 					context.AddRange(attendances);
-					await context.SaveChangesAsync();
+					await context.SaveChangesWithoutAuditAsync();
 				}
 			}
 			catch (Exception ex)
@@ -167,6 +172,8 @@ namespace MeetPoint.API.Database
 				logger.LogError(ex, "Error al ejecutar el Seed de Asistencias.");
 			}
 		}
+		
+		// Cargar comments.json
 		public static async Task LoadCommentsAsync(MeetPointContext context, ILoggerFactory loggerFactory)
 		{
 			try
@@ -177,7 +184,7 @@ namespace MeetPoint.API.Database
 
 				if (!await context.Comments.AnyAsync())
 				{
-					var user = await context.Users.FirstOrDefaultAsync();
+					var user = await context.Users.FirstOrDefaultAsync(u => u.Id == "2a373bd7-1829-4bb4-abb7-19da4257891d");
 
 					for (int i = 0; i < comments.Count; i++)
 					{
@@ -187,7 +194,7 @@ namespace MeetPoint.API.Database
 						comments[i].UpdatedDate = DateTime.Now;
 					}
 					context.AddRange(comments);
-					await context.SaveChangesAsync();
+					await context.SaveChangesWithoutAuditAsync();
 				}
 			}
 			catch (Exception ex)

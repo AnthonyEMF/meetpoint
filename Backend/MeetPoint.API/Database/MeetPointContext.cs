@@ -124,6 +124,12 @@ namespace MeetPoint.API.Database
 
 			return base.SaveChangesAsync(cancellationToken);
 		}
+		
+		// SaveChangesAsync pero que omite el AuditService que se puede usar cuando el usuario no esta autenticado
+		public async Task<int> SaveChangesWithoutAuditAsync( CancellationToken cancellationToken = default)
+		{
+			return await base.SaveChangesAsync(cancellationToken);
+		}
 
 		public DbSet<CategoryEntity> Categories { get; set; }
 		public DbSet<EventEntity> Events { get; set; }

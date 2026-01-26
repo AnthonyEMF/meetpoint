@@ -96,7 +96,7 @@ Primero clona este repositorio:
       "JWT": {
          "ValidAudience": "http://localhost:5173",
          "ValidIssuer": "https://localhost:7191",
-         "Secret": "Your hiper mega secret",
+         "Secret": "Esta-es-una-clave-super-secreta-y-segura-para-JWT-con-al-menos-32-caracteres",
          "Expires": "120",
          "RefreshTokenExpire": "240"
       },
