@@ -133,3 +133,11 @@ Primero clona este repositorio:
    ```bash
    dotnet run dev
    ```
+
+### 📋 Usuarios de prueba:
+
+- Administrador: **admin@me.com**  
+   Contraseña: **Temporal01***
+
+- Usuario: user@me.com  
+   Contraseña: **Temporal01***
