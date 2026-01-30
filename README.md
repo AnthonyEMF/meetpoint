@@ -45,7 +45,7 @@
 
 Primero clona este repositorio:
    ```bash
-   git clone https://github.com/AnthonyEMF/meetpoint.git
+   git clone https://github.com/AnthonyEMF/meetpoint.git MeetPoint
    ```
 
 ### ⚙️ Frontend:
@@ -53,7 +53,7 @@ Primero clona este repositorio:
 1. Accede a la carpeta Frontend:
 
    ```bash
-   cd Frontend
+   cd MeetPoint/Frontend
    ```
 
 2. Instala las dependencias:
@@ -73,13 +73,13 @@ Primero clona este repositorio:
 1. Accede a la carpeta MeetPoint.API:
 
    ```bash
-   cd backend/MeetPoint.API
+   cd MeetPoint/Backend/MeetPoint.API
    ```
 
 2. Crea el archivo appsettings.json:
 
    ```bash
-   mkdir appsettings.json
+   New-Item appsettings.json 
    ```
 
 3. Pega lo siguiente en appsettings.json (Los puertos pueden variar según tu equipo):
@@ -115,20 +115,26 @@ Primero clona este repositorio:
    docker-compose up -d
    ```
 
-5. Instala las herramientas de Entity Framework:
+5. Instala las herramientas de Entity Framework (si no las tienes):
 
    ```bash
    dotnet tool install --global dotnet-ef
    ```
 
-6. Creación y migración de la base de datos:
+6. Restaura las dependencias del proyecto:
+
+   ```bash
+   dotnet restore
+   ```
+
+7. Creación y migración de la base de datos:
 
    ```bash
    dotnet ef migrations add InitDatabase
    dotnet ef database update
    ```
 
-7. Ejecutar el proyecto:
+8. Ejecutar el proyecto:
 
    ```bash
    dotnet run dev
