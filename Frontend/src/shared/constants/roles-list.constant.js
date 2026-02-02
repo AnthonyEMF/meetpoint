@@ -1,5 +1,5 @@
 export const rolesListConstant = {
-    ADMIN: 'ADMIN',
-    ORGANIZER: 'ORGANIZER',
-    USER: 'USER'
-}
+  ADMIN: "ADMIN",
+  ORGANIZER: "ORGANIZER",
+  USER: "USER",
+};

@@ -1,4 +1,4 @@
-import { meetpointApi } from "../../config/api";
+import { meetpointApi } from "../../config";
 
 export const loginAsync = async (form) => {
   try {

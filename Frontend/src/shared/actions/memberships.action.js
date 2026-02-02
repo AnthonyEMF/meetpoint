@@ -1,4 +1,4 @@
-import { meetpointApi } from "../../config/api";
+import { meetpointApi } from "../../config";
 
 // Crear una membresía
 export const addMembershipApi = async (form) => {

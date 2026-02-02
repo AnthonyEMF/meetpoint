@@ -1,4 +1,4 @@
-import { meetpointApi } from "../../config/api";
+import { meetpointApi } from "../../config";
 
 // Obtener todos
 export const getEventsList = async (searchTerm = "", page = 1) => {
