@@ -3,7 +3,7 @@ import { Pagination } from "../../../shared/components";
 import { EventRowItem } from "../components";
 import { Link } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
-import { useEventsStore } from "../../client/store/useEventsStore";
+import { useEventsStore } from "../../user/store/useEventsStore";
 
 export const EventListPage = () => {
   const { events, loadEvents, isLoading } = useEventsStore();

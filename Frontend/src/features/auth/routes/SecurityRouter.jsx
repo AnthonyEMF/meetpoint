@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Footer, Nav } from "../../client/components";
+import { Footer, Nav } from "../../user/components";
 import { LoginPage, RegisterPage } from "../pages";
 
 export const SecurityRouter = () => {

@@ -1,7 +1,7 @@
 import { IoStatsChart } from "react-icons/io5";
 import { TbMessageReport } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../security/store";
+import { useAuthStore } from "../../auth/store";
 import { useUsersStore } from "../store/useUsersStore";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 

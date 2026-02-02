@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useAuthStore } from "../../features/security/store";
+import { useAuthStore } from "../../features/auth/store";
 
-const API_URL = "http://localhost:5048/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Buscar el token y retornarlo
 const getAuth = () => {

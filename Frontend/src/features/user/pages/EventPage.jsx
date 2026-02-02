@@ -2,7 +2,7 @@ import { formatDate } from "../../../shared/utils";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Attendances, Comments, EventPageSkeleton } from "../components";
-import { useAuthStore } from "../../security/store";
+import { useAuthStore } from "../../auth/store";
 import { ProtectedComponent, StarRating } from "../../../shared/components";
 import { FaRegCalendarXmark } from "react-icons/fa6";
 import { FaRegCalendarCheck } from "react-icons/fa";

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuthStore } from "../../security/store/useAuthStore";
+import { useAuthStore } from "../../auth/store/useAuthStore";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FiPlusCircle } from "react-icons/fi";
 import { FaPeoplePulling } from "react-icons/fa6";

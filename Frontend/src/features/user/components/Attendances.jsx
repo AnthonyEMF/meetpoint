@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthStore } from "../../security/store";
+import { useAuthStore } from "../../auth/store";
 import { Link } from "react-router-dom";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { Loading, ProtectedComponent } from "../../../shared/components";

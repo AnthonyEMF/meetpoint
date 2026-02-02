@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../security/store";
+import { useAuthStore } from "../../auth/store";
 
 export const UserDashboardRowItem = ({ users = [] }) => {
   // Obtener id del usuario en sesión

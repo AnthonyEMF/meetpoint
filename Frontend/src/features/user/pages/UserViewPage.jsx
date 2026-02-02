@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../../shared/utils";
-import { useAuthStore } from "../../security/store";
+import { useAuthStore } from "../../auth/store";
 import { ProtectedComponent, StarRating } from "../../../shared/components";
 import { rolesListConstant } from "../../../shared/constants";
 import { IoStatsChart } from "react-icons/io5";

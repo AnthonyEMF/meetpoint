@@ -1,4 +1,4 @@
-import { useAuthStore } from "../../features/security/store";
+import { useAuthStore } from "../../features/auth/store";
 
 export const ProtectedComponent = ({ requiredRoles, children }) => {
   const roles = useAuthStore((state) => state.roles);

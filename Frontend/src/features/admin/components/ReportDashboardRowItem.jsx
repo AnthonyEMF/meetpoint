@@ -1,6 +1,6 @@
 import { formatDate } from "../../../shared/utils";
 import { useState } from "react";
-import { useReportsStore } from "../../client/store/useReportsStore";
+import { useReportsStore } from "../../user/store/useReportsStore";
 
 export const ReportDashboardRowItem = ({ report, handleReportsChange }) => {
   const { deleteReport, isSubmitting } = useReportsStore();

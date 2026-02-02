@@ -48,32 +48,12 @@ Primero clona este repositorio:
    git clone https://github.com/AnthonyEMF/meetpoint.git MeetPoint
    ```
 
-### ⚙️ Frontend:
-
-1. Accede a la carpeta Frontend:
-
-   ```bash
-   cd MeetPoint/Frontend
-   ```
-
-2. Instala las dependencias:
-
-   ```bash
-   npm install
-   ```
-
-3. Ejecuta el proyecto:
-
-   ```bash
-   npm run dev
-   ```
-
 ### ⚙️ Backend:
 
-1. Accede a la carpeta MeetPoint.API:
+1. Accede a la carpeta Backend:
 
    ```bash
-   cd MeetPoint/Backend/MeetPoint.API
+   cd MeetPoint/Backend
    ```
 
 2. Crea el archivo appsettings.json:
@@ -138,6 +118,39 @@ Primero clona este repositorio:
 
    ```bash
    dotnet run dev
+   ```
+
+### ⚙️ Frontend:
+
+1. Accede a la carpeta Frontend:
+
+   ```bash
+   cd MeetPoint/Frontend
+   ```
+
+2. Instala las dependencias:
+
+   ```bash
+   npm install
+   ```
+
+3. Crea el archivo .env:
+
+   ```bash
+   New-Item .env
+   ```
+
+4. Pega lo siguiente en .env (Los puertos pueden variar según tu equipo):
+
+   ```bash
+   # URL de la API (Backend)
+   VITE_API_URL=http://localhost:5048/api
+   ```
+
+5. Ejecuta el proyecto:
+
+   ```bash
+   npm run dev
    ```
 
 ### 📋 Usuarios de prueba:

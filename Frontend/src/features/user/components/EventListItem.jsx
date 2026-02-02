@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../shared/utils";
-import { useAuthStore } from "../../security/store";
+import { useAuthStore } from "../../auth/store";
 import { FaRegCalendarXmark } from "react-icons/fa6";
 import { FaRegCalendarCheck } from "react-icons/fa";
 

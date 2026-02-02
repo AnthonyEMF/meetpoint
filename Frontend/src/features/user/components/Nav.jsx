@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../security/store/useAuthStore";
+import { useAuthStore } from "../../auth/store/useAuthStore";
 import { ProtectedComponent } from "../../../shared/components/ProtectedComponent";
 import { rolesListConstant } from "../../../shared/constants";
 import { FaHome, FaUserEdit } from "react-icons/fa";

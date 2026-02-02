@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../../shared/utils";
-import { useAuthStore } from "../../security/store/useAuthStore";
+import { useAuthStore } from "../../auth/store/useAuthStore";
 import { IoStatsChart } from "react-icons/io5";
 import { FiPlusCircle } from "react-icons/fi";
 import { BiLogOutCircle } from "react-icons/bi";

@@ -1,10 +1,10 @@
 # Backend configs
-Backend/MeetPoint.API/appsettings.json
-backend/MeetPoint.API/appsettings.json
+Backend/appsettings.json
+backend/appsettings.json
 
 # Database migrations
-Backend/MeetPoint.API/Migrations/
-backend/MeetPoint.API/Migrations/
+Backend/Migrations/
+backend/Migrations/
 
 # Node packages
 Frontend/node_modules/

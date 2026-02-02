@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import { Footer, Nav } from "../../client/components"
+import { Footer, Nav } from "../../user/components"
 import { DashboardPage } from "../pages/DashboardPage"
 import { CategoriesListPage, CreateCategoriesPage, EditUserPage, EventListPage, ReportsListPage, UsersListPage } from "../pages"
 import { EditCategoryPage } from "../pages/EditCategoryPage"

@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "../../features/security/store"
+import { useAuthStore } from "../../features/auth/store"
 import { rolesListConstant } from "../constants";
 
 export const ProtectedLayout = () => {

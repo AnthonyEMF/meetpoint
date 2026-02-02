@@ -1,6 +1,6 @@
 import { Footer, Nav } from '../components';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { HomePage, MainPage, UserPage, EventPage, CreateEventPage, EditEventPage, UserViewPage, EditUserPage, MembershipsPage } from '../pages/';
+import { HomePage, MainPage, UserPage, EventPage, CreateEventPage, EditEventPage, UserViewPage, EditUserPage, MembershipsPage } from '../pages';
 
 export const ClientRouter = () => {
   return (

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useCategoriesStore } from "../store/useCategoriesStore";
 import { useEffect, useState } from "react";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
-import { useEventsStore } from "../../client/store/useEventsStore";
+import { useEventsStore } from "../../user/store/useEventsStore";
 
 export const CategoriesRowItem = ({ category, handleCategoriesChange }) => {
   const { deleteCategory } = useCategoriesStore();

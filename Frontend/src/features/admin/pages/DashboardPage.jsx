@@ -7,7 +7,7 @@ import { FaComments } from "react-icons/fa";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { MdAssignment } from "react-icons/md";
 import { IoPeopleSharp } from "react-icons/io5";
-import { useReportsStore } from "../../client/store/useReportsStore";
+import { useReportsStore } from "../../user/store/useReportsStore";
 import { RiAdminFill } from "react-icons/ri";
 
 export const DashboardPage = () => {

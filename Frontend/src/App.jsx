@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRouter } from "./routes/AppRouter";
-import { useAuthStore } from "./features/security/store";
+import { useAuthStore } from "./features/auth/store";
 import { useEffect, useState } from "react";
 import { Loading } from "./shared/components";
 

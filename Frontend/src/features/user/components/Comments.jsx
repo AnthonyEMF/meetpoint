@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RiDeleteBin5Fill, RiEdit2Fill, RiReplyFill } from "react-icons/ri";
-import { useAuthStore } from "../../security/store";
+import { useAuthStore } from "../../auth/store";
 import { Link } from "react-router-dom";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { ProtectedComponent } from "../../../shared/components";

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom"
-import { ClientRouter } from "../features/client/routes"
-import { SecurityRouter } from "../features/security/routes/SecurityRouter"
+import { ClientRouter } from "../features/user/routes"
+import { SecurityRouter } from "../features/auth/routes/SecurityRouter"
 import { AdministrationRouter } from "../features/admin/routes/AdministrationRouter"
 import { ProtectedLayout } from "../shared/components"
 
