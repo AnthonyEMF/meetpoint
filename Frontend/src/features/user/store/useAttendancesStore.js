@@ -1,5 +1,9 @@
 import { create } from "zustand";
-import { createAttendanceApi, editAttendanceApi, deleteAttendanceApi } from "../../../shared/actions/attendances";
+import {
+  createAttendanceApi,
+  editAttendanceApi,
+  deleteAttendanceApi,
+} from "../../../shared/actions";
 
 export const useAttendancesStore = create((set) => ({
   // Estados iniciales

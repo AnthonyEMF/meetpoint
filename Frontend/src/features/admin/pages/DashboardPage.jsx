@@ -87,7 +87,7 @@ export const DashboardPage = () => {
       <header>
         <div className="container mx-auto mt-4 px-4 py-4 text-center">
           <h1 className="flex items-center justify-center text-4xl font-bold text-white">
-            Administración
+            Panel de Control
             <RiAdminFill size={35} className="ml-1" />
           </h1>
         </div>

@@ -27,7 +27,7 @@ export const Nav = () => {
               <div>
                 {/* Mostrar botón de Administración para el rol de ADMIN */}
                 <ProtectedComponent requiredRoles={[rolesListConstant.ADMIN]}>
-                  <Link to="/administration/dashboard" className="bg-gray-800 ml-3 px-4 py-2 rounded hover:bg-gray-700">Administración</Link>
+                  <Link to="/administration/dashboard" className="bg-gray-800 ml-3 px-4 py-2 rounded hover:bg-gray-700">Panel de Control</Link>
                 </ProtectedComponent>
               </div>
             )}

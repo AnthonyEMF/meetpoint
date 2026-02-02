@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { getEventsList, getEventById, createEventApi, editEventApi, deleteEventApi } from "../../../shared/actions/events";
+import {
+  getEventsList,
+  getEventById,
+  createEventApi,
+  editEventApi,
+  deleteEventApi,
+} from "../../../shared/actions";
 
 export const useEventsStore = create((set) => ({
   // Estados iniciales

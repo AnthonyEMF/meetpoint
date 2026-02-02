@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { dashboardAsync } from "../../../shared/actions/dashboard/dashboard.action";
+import { dashboardAsync } from "../../../shared/actions";
 
 export const useDashboardStore = create((set) => ({
   dashboardData: {

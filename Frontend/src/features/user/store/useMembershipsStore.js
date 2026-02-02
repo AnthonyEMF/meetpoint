@@ -1,5 +1,8 @@
 import { create } from "zustand";
-import { addMembershipApi, getMembershipStateApi } from "../../../shared/actions/memberships/memberships.action";
+import {
+  addMembershipApi,
+  getMembershipStateApi,
+} from "../../../shared/actions";
 
 export const useMembershipsStore = create((set) => ({
   selectedMembership: {},

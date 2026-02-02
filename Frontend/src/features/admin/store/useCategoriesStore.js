@@ -5,7 +5,7 @@ import {
   editCategoryApi,
   getCategoriesList,
   getCategoryById,
-} from "../../../shared/actions/categories/categories.action";
+} from "../../../shared/actions";
 
 export const useCategoriesStore = create((set, get) => ({
   categories: {},

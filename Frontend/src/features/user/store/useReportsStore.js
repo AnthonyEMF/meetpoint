@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { createReportApi, deleteReportApi, editReportApi, getReportById, getReportsList } from "../../../shared/actions/reports/reports.action";
+import {
+  createReportApi,
+  deleteReportApi,
+  editReportApi,
+  getReportById,
+  getReportsList,
+} from "../../../shared/actions";
 
 export const useReportsStore = create((set) => ({
   // Estados iniciales

@@ -6,7 +6,7 @@ import {
   getUserById,
   getUsersList,
   toggleBlockUserApi,
-} from "../../../shared/actions/users/users.action";
+} from "../../../shared/actions";
 
 export const useUsersStore = create((set, get) => ({
   user: null,

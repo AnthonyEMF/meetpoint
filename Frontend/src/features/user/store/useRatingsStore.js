@@ -1,5 +1,12 @@
 import { create } from "zustand";
-import { getRatingsList, getRatingById, getRatingByUserId, createRatingApi, editRatingApi, deleteRatingApi } from "../../../shared/actions/ratings/ratings.action";
+import {
+  getRatingsList,
+  getRatingById,
+  getRatingByUserId,
+  createRatingApi,
+  editRatingApi,
+  deleteRatingApi,
+} from "../../../shared/actions";
 
 export const useRatingsStore = create((set) => ({
   // Estados iniciales
