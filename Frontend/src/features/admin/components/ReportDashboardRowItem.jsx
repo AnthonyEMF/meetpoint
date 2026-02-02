@@ -4,8 +4,12 @@ import { useReportsStore } from "../../user/store/useReportsStore";
 
 export const ReportDashboardRowItem = ({ report, handleReportsChange }) => {
   const { deleteReport, isSubmitting } = useReportsStore();
-  const [alertData, setAlertData] = useState({ message: "", type: "", show: false });
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+  const [alertData, setAlertData] = useState({
+    message: "",
+    type: "",
+    show: false,
+  });
 
   // Manejar eliminación del reporte
   const handleDeleteReport = async () => {
@@ -72,7 +76,9 @@ export const ReportDashboardRowItem = ({ report, handleReportsChange }) => {
 
       <li className="p-4 bg-gray-200 rounded shadow flex justify-between items-center">
         <div className="w-1/5">
-          <p className="font-bold text-gray-700">Para: {report.organizerName}</p>
+          <p className="font-bold text-gray-700">
+            Para: {report.organizerName}
+          </p>
           <p className="text-sm text-gray-700">De: {report.reporterName}</p>
         </div>
         <div className="w-3/5">

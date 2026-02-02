@@ -1,5 +1,8 @@
 import { useFormik } from "formik";
-import { categoryInitValues, categoryValidationSchema } from "../forms/category.data";
+import {
+  categoryInitValues,
+  categoryValidationSchema,
+} from "../forms/category.data";
 import { useCategoriesStore } from "../store/useCategoriesStore";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";

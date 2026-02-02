@@ -9,6 +9,7 @@ export const useAuthStore = create((set, get) => ({
   isAuthenticated: false,
   message: "",
   error: false,
+
   // Iniciar Sesión
   login: async (form) => {
     const { status, data, message } = await loginAsync(form);
@@ -17,23 +18,23 @@ export const useAuthStore = create((set, get) => ({
       set({
         error: false,
         user: {
-            email: data.email,
-            tokenExpiration: data.tokenExpiration,
+          email: data.email,
+          tokenExpiration: data.tokenExpiration,
         },
         token: data.token,
         isAuthenticated: true,
-        message: message
+        message: message,
       });
 
       // Guardar información en LocalStorage
-      localStorage.setItem('user', JSON.stringify(get().user ?? {}));
-      localStorage.setItem('token', get().token);
+      localStorage.setItem("user", JSON.stringify(get().user ?? {}));
+      localStorage.setItem("token", get().token);
 
       return;
     }
 
-    // Si status es falso... 
-    set({message: message, error: true});
+    // Si status es falso...
+    set({ message: message, error: true });
     return;
   },
 
@@ -56,11 +57,16 @@ export const useAuthStore = create((set, get) => ({
 
   // Renovar el token
   setSession: (user, token, refreshToken) => {
-    set({user: user, token: token, refreshToken: refreshToken, isAuthenticated: true});
+    set({
+      user: user,
+      token: token,
+      refreshToken: refreshToken,
+      isAuthenticated: true,
+    });
 
-    localStorage.setItem('user', JSON.stringify(get().user ?? {}));
-    localStorage.setItem('token', get().token);
-    localStorage.setItem('refreshToken', get().refreshToken);
+    localStorage.setItem("user", JSON.stringify(get().user ?? {}));
+    localStorage.setItem("token", get().token);
+    localStorage.setItem("refreshToken", get().refreshToken);
   },
 
   // Cerrar Sesión
@@ -71,35 +77,42 @@ export const useAuthStore = create((set, get) => ({
       isAuthenticated: false,
       error: false,
       message: "",
-      roles: []
+      roles: [],
     });
     localStorage.clear();
   },
 
   // Validar la sesión
   validateAuthentication: () => {
-    const token = localStorage.getItem('token') ?? '';
+    const token = localStorage.getItem("token") ?? "";
 
-    if(token === ''){
-      set({isAuthenticated: false});
-      return ;
-    }else{
+    if (token === "") {
+      set({ isAuthenticated: false });
+      return;
+    } else {
       try {
         const decodeJwt = jwtDecode(token);
-        const currentTime = Math.floor(Date.now()/1000);
+        const currentTime = Math.floor(Date.now() / 1000);
+
         // TODO: Cambiar con el refreshTokenExpire
         if (decodeJwt.exp < currentTime) {
-          console.log('Token expirado');
-          set({isAuthenticated: false});
+          console.log("Token expirado");
+          set({ isAuthenticated: false });
           return;
         }
 
-        const roles = decodeJwt["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? [];
+        const roles =
+          decodeJwt[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ] ?? [];
 
-        set({isAuthenticated: true, roles: typeof(roles) === 'string' ? [roles] : roles});
+        set({
+          isAuthenticated: true,
+          roles: typeof roles === "string" ? [roles] : roles,
+        });
       } catch (error) {
         console.error(error);
-        set({isAuthenticated: false});
+        set({ isAuthenticated: false });
       }
     }
   },

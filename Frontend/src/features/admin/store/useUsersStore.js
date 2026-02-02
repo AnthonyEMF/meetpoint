@@ -1,5 +1,12 @@
 import { create } from "zustand";
-import { createUserApi, deleteUserApi, editUserApi, getUserById, getUsersList, toggleBlockUserApi } from "../../../shared/actions/users/users.action";
+import {
+  createUserApi,
+  deleteUserApi,
+  editUserApi,
+  getUserById,
+  getUsersList,
+  toggleBlockUserApi,
+} from "../../../shared/actions/users/users.action";
 
 export const useUsersStore = create((set, get) => ({
   user: null,
@@ -70,8 +77,8 @@ export const useUsersStore = create((set, get) => ({
         set((state) => ({
           usersData: {
             ...state.usersData,
-            items: [...state.usersData.items, result.data]
-          }
+            items: [...state.usersData.items, result.data],
+          },
         }));
       } else {
         throw new Error("Error al crear usuario");
@@ -88,14 +95,14 @@ export const useUsersStore = create((set, get) => ({
       const result = await editUserApi(id, form);
       if (result.status) {
         const updatedUsers = get().usersData.items.map((user) =>
-          user.id === id ? { ...user, ...result.data } : user
+          user.id === id ? { ...user, ...result.data } : user,
         );
         set((state) => ({
           usersData: {
             ...state.usersData,
-            items: updatedUsers
+            items: updatedUsers,
           },
-          selectedUser: result.data
+          selectedUser: result.data,
         }));
       } else {
         throw new Error("Error al editar el usuario");
@@ -114,9 +121,9 @@ export const useUsersStore = create((set, get) => ({
         set((state) => ({
           usersData: {
             ...state.usersData,
-            items: state.usersData.items.filter((user) => user.id !== id)
+            items: state.usersData.items.filter((user) => user.id !== id),
           },
-          selectedUser: state.selectedUser.id === id ? {} : state.selectedUser
+          selectedUser: state.selectedUser.id === id ? {} : state.selectedUser,
         }));
       } else {
         throw new Error("Error al eliminar el usuario");
@@ -129,29 +136,32 @@ export const useUsersStore = create((set, get) => ({
   },
 
   toggleBlockUser: async (id) => {
-    try { 
+    try {
       const result = await toggleBlockUserApi(id);
       if (result.status) {
-        const updatedUsers = get().usersData.items.map((user) => 
-          user.id === id ? { ...user, isBlocked: !user.isBlocked } : user 
-        ); 
-        set((state) => ({ 
-          usersData: { 
+        const updatedUsers = get().usersData.items.map((user) =>
+          user.id === id ? { ...user, isBlocked: !user.isBlocked } : user,
+        );
+        set((state) => ({
+          usersData: {
             ...state.usersData,
-            items: updatedUsers
-          }, 
-          selectedUser: get().selectedUser.id === id
-           ? { ...get().selectedUser, isBlocked: !get().selectedUser.isBlocked } 
-           : get().selectedUser 
-        })); 
-      } else { 
-        throw new Error("Error al bloquear/desbloquear el usuario"); 
-      } 
-      return result; 
+            items: updatedUsers,
+          },
+          selectedUser:
+            get().selectedUser.id === id
+              ? {
+                  ...get().selectedUser,
+                  isBlocked: !get().selectedUser.isBlocked,
+                }
+              : get().selectedUser,
+        }));
+      } else {
+        throw new Error("Error al bloquear/desbloquear el usuario");
+      }
+      return result;
     } catch (error) {
       console.error(error);
       throw error;
     }
-  }
-
+  },
 }));

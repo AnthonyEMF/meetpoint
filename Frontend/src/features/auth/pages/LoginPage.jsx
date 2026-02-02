@@ -1,51 +1,23 @@
 import { MdEmail } from "react-icons/md";
 import { ImLock } from "react-icons/im";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Loading } from "../../../shared/components";
-import { useAuthStore } from "../store/useAuthStore";
-import { useFormik } from "formik";
-import { loginInitValues, loginValidationSchema } from "../forms/login.data";
+import { useLogin } from "../hooks/useLogin";
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  // Variables de autenticación
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const validateAuthentication = useAuthStore((state) => state.validateAuthentication);
-  const login = useAuthStore((state) => state.login);
-  const error = useAuthStore((state) => state.error);
-  const message = useAuthStore((state) => state.message);
-
-  // Si se válida la autenticación (isAuthenticated = true) redireccionar la página
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/main');
-    }
-  }, [isAuthenticated]);
-
-  // Manejo del formulario con Formik
-  const formik = useFormik({
-    initialValues: loginInitValues,
-    validationSchema: loginValidationSchema,
-    validateOnChange: true,
-    onSubmit: async (formValues) => {
-      setLoading(true);
-      await login(formValues);
-      validateAuthentication();
-      setLoading(false);
-    }
-  });
-
-  // Pantalla de cargando...
+  const { formik, loading, error, message } = useLogin();
+  
+  // Pantalla de carga
   if (loading) {
-    <Loading />
+    <Loading />;
   }
 
   return (
     <div className="flex items-center justify-center h-full mt-8">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-xl font-semibold mb-6 text-center">Iniciar Sesión</h1>
+        <h1 className="text-xl font-semibold mb-6 text-center">
+          Iniciar Sesión
+        </h1>
         {/* Formulario de Ingreso */}
         <div>
           <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -64,7 +36,9 @@ export const LoginPage = () => {
                 />
               </div>
               {formik.touched.email && formik.errors.email && (
-                <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.email}
+                </div>
               )}
             </div>
 
@@ -83,7 +57,9 @@ export const LoginPage = () => {
                 />
               </div>
               {formik.touched.password && formik.errors.password && (
-                <div className="text-red-500 text-xs mt-1">{formik.errors.password}</div>
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.password}
+                </div>
               )}
             </div>
 

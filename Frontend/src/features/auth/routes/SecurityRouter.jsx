@@ -8,11 +8,11 @@ export const SecurityRouter = () => {
       <Nav />
       <div className="px-10">
         <div className="min-h-screen flex flex-col ">
-            <Routes>
-                <Route path='/login' element={<LoginPage />} />
-                <Route path='/*' element={<Navigate to={"/security/login"} />} />
-                <Route path='/register' element={<RegisterPage />} />
-            </Routes>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/*" element={<Navigate to={"/security/login"} />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Routes>
         </div>
       </div>
       <Footer />

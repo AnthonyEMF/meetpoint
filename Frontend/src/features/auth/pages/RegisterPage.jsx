@@ -1,47 +1,16 @@
 import { MdEmail, MdLocationOn } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { ImLock } from "react-icons/im";
 import { FaUser } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Loading } from "../../../shared/components";
-import { useAuthStore } from "../store";
-import { useFormik } from "formik";
-import { registerInitValues, registerValidationSchema } from "../forms/register.data";
+import { useRegister } from "../hooks/useRegister";
 
 export const RegisterPage = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-  // Variables de autenticación
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const validateAuthentication = useAuthStore((state) => state.validateAuthentication);
-  const register = useAuthStore((state) => state.register);
-  const error = useAuthStore((state) => state.error);
-  const message = useAuthStore((state) => state.message);
-
-  // Si se válida la autenticación (isAuthenticated = true) redireccionar la página
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/main');
-    }
-  }, [isAuthenticated]);
-
-  // Manejo del formulario con Formik
-  const formik = useFormik({
-    initialValues: registerInitValues ,
-    validationSchema: registerValidationSchema,
-    validateOnChange: true,
-    onSubmit: async (formValues) => {
-      setLoading(true);
-      await register(formValues);
-      validateAuthentication();
-      setLoading(false);
-    }
-  });
+  const { formik, loading, error, message } = useRegister();
 
   // Pantalla de carga
   if (loading) {
-    <Loading />
+    <Loading />;
   }
 
   return (
@@ -51,7 +20,6 @@ export const RegisterPage = () => {
 
         {/* Formulario de registro */}
         <form onSubmit={formik.handleSubmit} className="space-y-4">
-
           {/* Primer nombre */}
           <div>
             <div className="flex items-center mb-1">
@@ -67,7 +35,9 @@ export const RegisterPage = () => {
               />
             </div>
             {formik.touched.firstName && formik.errors.firstName && (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.firstName}</div>
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.firstName}
+              </div>
             )}
           </div>
 
@@ -86,7 +56,9 @@ export const RegisterPage = () => {
               />
             </div>
             {formik.touched.lastName && formik.errors.lastName && (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.lastName}</div>
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.lastName}
+              </div>
             )}
           </div>
 
@@ -105,7 +77,9 @@ export const RegisterPage = () => {
               />
             </div>
             {formik.touched.location && formik.errors.location && (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.location}</div>
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.location}
+              </div>
             )}
           </div>
 
@@ -124,10 +98,12 @@ export const RegisterPage = () => {
               />
             </div>
             {formik.touched.email && formik.errors.email && (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.email}
+              </div>
             )}
           </div>
-          
+
           {/* Contraseña */}
           <div>
             <div className="flex items-center mb-1">
@@ -143,7 +119,9 @@ export const RegisterPage = () => {
               />
             </div>
             {formik.touched.password && formik.errors.password && (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.password}</div>
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.password}
+              </div>
             )}
           </div>
 
@@ -161,9 +139,12 @@ export const RegisterPage = () => {
                 className="border w-full p-2 rounded-md"
               />
             </div>
-            {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.confirmPassword}</div>
-            )}
+            {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.confirmPassword}
+                </div>
+              )}
           </div>
 
           {/* Botón de ingresar */}
@@ -178,10 +159,9 @@ export const RegisterPage = () => {
           <Link
             to="/security/login"
             className="flex justify-center text-blue-500 underline"
-            >
+          >
             Iniciar Sesión
           </Link>
-
         </form>
 
         {/* Mensaje de Error */}
@@ -190,7 +170,6 @@ export const RegisterPage = () => {
             {message}
           </span>
         )}
-
       </div>
     </div>
   );

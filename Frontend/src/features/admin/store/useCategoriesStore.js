@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { createCategoryApi, deleteCategoryApi, editCategoryApi, getCategoriesList, getCategoryById } from "../../../shared/actions/categories/categories.action";
+import {
+  createCategoryApi,
+  deleteCategoryApi,
+  editCategoryApi,
+  getCategoriesList,
+  getCategoryById,
+} from "../../../shared/actions/categories/categories.action";
 
 export const useCategoriesStore = create((set, get) => ({
   categories: {},
@@ -12,20 +18,20 @@ export const useCategoriesStore = create((set, get) => ({
     pageSize: 10,
     totalItems: 0,
     totalPages: 0,
-    items: []
+    items: [],
   },
 
   // Cargar todas las categorías
   loadCategories: async (searchTerm, page) => {
     set({ isLoading: true });
-    try { 
-      const result = await getCategoriesList(searchTerm, page); 
-      set({ categories: result }); 
-    } catch (error) { 
-      console.error("Error al cargar las categorías:", error); 
-    } finally { 
-      set({ isLoading: false }); 
-    } 
+    try {
+      const result = await getCategoriesList(searchTerm, page);
+      set({ categories: result });
+    } catch (error) {
+      console.error("Error al cargar las categorías:", error);
+    } finally {
+      set({ isLoading: false });
+    }
   },
 
   // Cargar categoría por id
@@ -52,8 +58,8 @@ export const useCategoriesStore = create((set, get) => ({
         set((state) => ({
           categoriesData: {
             ...state.categoriesData,
-            items: [...state.categoriesData.items, result.data]
-          }
+            items: [...state.categoriesData.items, result.data],
+          },
         }));
       } else {
         throw new Error("Error al crear la categoría");
@@ -71,14 +77,14 @@ export const useCategoriesStore = create((set, get) => ({
       const result = await editCategoryApi(id, form);
       if (result.status) {
         const updatedCategories = get().categoriesData.items.map((category) =>
-          category.id === id ? { ...category, ...result.data } : category
+          category.id === id ? { ...category, ...result.data } : category,
         );
         set((state) => ({
           categoriesData: {
             ...state.categoriesData,
-            items: updatedCategories
+            items: updatedCategories,
           },
-          selectedCategory: result.data
+          selectedCategory: result.data,
         }));
       } else {
         throw new Error("Error al editar la categoría");
@@ -98,9 +104,12 @@ export const useCategoriesStore = create((set, get) => ({
         set((state) => ({
           categoriesData: {
             ...state.categoriesData,
-            items: state.categoriesData.items.filter((category) => category.id !== id)
+            items: state.categoriesData.items.filter(
+              (category) => category.id !== id,
+            ),
           },
-          selectedCategory: state.selectedCategory.id === id ? {} : state.selectedCategory
+          selectedCategory:
+            state.selectedCategory.id === id ? {} : state.selectedCategory,
         }));
       } else {
         throw new Error("Error al eliminar la categoría");
@@ -110,5 +119,5 @@ export const useCategoriesStore = create((set, get) => ({
       console.error(error);
       throw error;
     }
-  }
+  },
 }));

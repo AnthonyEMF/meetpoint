@@ -15,10 +15,15 @@ export const EventRowItem = ({ event }) => {
         {formatDateShort(event.date)}
       </td>
       <td className="px-6 py-4 text-sm text-gray-500 ">
-        <div className="flex justify-center"><FaRegComment className="mt-1 mr-1" /> {event.commentsCount}</div>
+        <div className="flex justify-center">
+          <FaRegComment className="mt-1 mr-1" /> {event.commentsCount}
+        </div>
       </td>
       <td className="px-6 py-4 text-sm text-gray-500 ">
-      <div className="flex justify-center"><MdOutlinePlaylistAddCheck size={17} className="mt-1 mr-1" /> {event.attendancesCount}</div>
+        <div className="flex justify-center">
+          <MdOutlinePlaylistAddCheck size={17} className="mt-1 mr-1" />{" "}
+          {event.attendancesCount}
+        </div>
       </td>
       <td className="px-6 py-4 text-sm font-medium">
         <Link

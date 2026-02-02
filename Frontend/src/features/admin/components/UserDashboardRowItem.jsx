@@ -15,9 +15,7 @@ export const UserDashboardRowItem = ({ users = [] }) => {
             to={user.id === loggedUserId ? "/user" : `/user/view/${user.id}`}
           >
             <div>
-              <p className="font-medium text-gray-700">
-                {user.fullName}
-              </p>
+              <p className="font-medium text-gray-700">{user.fullName}</p>
               <p className="text-sm text-gray-500">{user.email}</p>
             </div>
             <span
@@ -25,15 +23,15 @@ export const UserDashboardRowItem = ({ users = [] }) => {
                 user.roles.includes("ADMIN")
                   ? "bg-green-500 text-white"
                   : user.roles.includes("ORGANIZER")
-                  ? "bg-yellow-500 text-white"
-                  : "bg-blue-500 text-white"
+                    ? "bg-yellow-500 text-white"
+                    : "bg-blue-500 text-white"
               }`}
             >
               {user.roles.includes("ADMIN")
                 ? "Admin"
                 : user.roles.includes("ORGANIZER")
-                ? "Organizer"
-                : "Usuario"}
+                  ? "Organizer"
+                  : "Usuario"}
             </span>
           </Link>
         </div>
