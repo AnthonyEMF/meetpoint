@@ -9,8 +9,6 @@ backend/Migrations/
 # Node packages
 Frontend/node_modules/
 frontend/node_modules/
-Frontend/package-lock.json
-frontend/package-lock.json
 
 # ENV files
 Frontend/.env
